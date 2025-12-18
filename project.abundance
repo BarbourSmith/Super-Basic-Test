@@ -25,6 +25,26 @@
       ]
     },
     {
+      "atomType": "Rotate",
+      "x": 0.4404761904761905,
+      "y": 0.766016713091922,
+      "uniqueID": "id-18",
+      "ioValues": [
+        {
+          "name": "x-axis degrees",
+          "ioValue": 0
+        },
+        {
+          "name": "y-axis degrees",
+          "ioValue": 0
+        },
+        {
+          "name": "z-axis degrees",
+          "ioValue": 45
+        }
+      ]
+    },
+    {
       "atomType": "Molecule",
       "x": 0.29365079365079366,
       "y": 0.6072423398328691,
@@ -66,8 +86,7 @@
             },
             {
               "name": "zDist",
-              "ioValue": -10,
-              "currentEquation": "-10"
+              "ioValue": -10
             }
           ]
         }
@@ -85,27 +104,6 @@
         }
       ],
       "fileTypeVersion": 1
-    },
-    {
-      "atomType": "Rotate",
-      "x": 0.4404761904761905,
-      "y": 0.766016713091922,
-      "uniqueID": "id-18",
-      "ioValues": [
-        {
-          "name": "x-axis degrees",
-          "ioValue": 0
-        },
-        {
-          "name": "y-axis degrees",
-          "ioValue": 0
-        },
-        {
-          "name": "z-axis degrees",
-          "ioValue": 45,
-          "currentEquation": "45"
-        }
-      ]
     }
   ],
   "allConnectors": [
