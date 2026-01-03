@@ -45,6 +45,15 @@
       ]
     },
     {
+      "atomType": "Readme",
+      "x": 0.38227513227513227,
+      "y": 0.34818941504178275,
+      "uniqueID": "id-39",
+      "name": "README",
+      "readMeText": "Lets see if this saves",
+      "global": true
+    },
+    {
       "atomType": "Molecule",
       "x": 0.29365079365079366,
       "y": 0.6072423398328691,
@@ -106,13 +115,58 @@
       "fileTypeVersion": 1
     },
     {
-      "atomType": "Readme",
-      "x": 0.38227513227513227,
-      "y": 0.34818941504178275,
-      "uniqueID": "id-39",
-      "name": "README",
-      "readMeText": "Lets see if this saves",
-      "global": true
+      "atomType": "Molecule",
+      "x": 0.5172727272727272,
+      "y": 0.5543175487465182,
+      "uniqueID": "id-61",
+      "name": "A first molecule",
+      "topLevel": false,
+      "allAtoms": [
+        {
+          "atomType": "Output",
+          "x": 0.98,
+          "y": 0.5,
+          "uniqueID": "id-63"
+        },
+        {
+          "atomType": "Readme",
+          "x": 0.2281818181818182,
+          "y": 0.43732590529247906,
+          "uniqueID": "id-65",
+          "name": "README",
+          "readMeText": "Text inside that first molecule",
+          "global": true
+        },
+        {
+          "atomType": "Molecule",
+          "x": 0.42727272727272725,
+          "y": 0.6100278551532033,
+          "uniqueID": "id-67",
+          "name": "An inner molecule",
+          "topLevel": false,
+          "allAtoms": [
+            {
+              "atomType": "Output",
+              "x": 0.98,
+              "y": 0.5,
+              "uniqueID": "id-69"
+            },
+            {
+              "atomType": "Readme",
+              "x": 0.28818181818181815,
+              "y": 0.46239554317548753,
+              "uniqueID": "id-78",
+              "name": "README",
+              "readMeText": "Some text inside the inner molecule",
+              "global": true
+            }
+          ],
+          "allConnectors": [],
+          "fileTypeVersion": 1
+        }
+      ],
+      "allConnectors": [],
+      "fileTypeVersion": 1
     }
   ],
   "allConnectors": [
