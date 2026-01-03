@@ -130,8 +130,8 @@
         },
         {
           "atomType": "Readme",
-          "x": 0.2281818181818182,
-          "y": 0.43732590529247906,
+          "x": 0.2381818181818182,
+          "y": 0.4428969359331476,
           "uniqueID": "id-65",
           "name": "README",
           "readMeText": "Text inside that first molecule",
@@ -153,8 +153,8 @@
             },
             {
               "atomType": "Readme",
-              "x": 0.28818181818181815,
-              "y": 0.46239554317548753,
+              "x": 0.29363636363636364,
+              "y": 0.467966573816156,
               "uniqueID": "id-78",
               "name": "README",
               "readMeText": "Some text inside the inner molecule",
