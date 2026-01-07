@@ -10,7 +10,13 @@
       "atomType": "Output",
       "x": 0.98,
       "y": 0.5,
-      "uniqueID": "dddabc94-fc33-4854-a6f0-1a8dc5125934"
+      "uniqueID": "dddabc94-fc33-4854-a6f0-1a8dc5125934",
+      "ioValues": [
+        {
+          "name": "number or geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ]
     },
     {
       "atomType": "Circle",
@@ -31,6 +37,10 @@
       "uniqueID": "id-18",
       "ioValues": [
         {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
           "name": "x-axis degrees",
           "ioValue": 0
         },
@@ -50,6 +60,12 @@
       "y": 0.34818941504178275,
       "uniqueID": "id-39",
       "name": "README",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ],
       "readMeText": "Lets see if this saves",
       "global": true
     },
@@ -65,7 +81,13 @@
           "atomType": "Output",
           "x": 0.98,
           "y": 0.5,
-          "uniqueID": "id-8"
+          "uniqueID": "id-8",
+          "ioValues": [
+            {
+              "name": "number or geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
         },
         {
           "atomType": "Import",
@@ -85,6 +107,10 @@
           "y": 0.5097493036211699,
           "uniqueID": "id-12",
           "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
             {
               "name": "xDist",
               "ioValue": 0
@@ -116,8 +142,8 @@
     },
     {
       "atomType": "Molecule",
-      "x": 0.5172727272727272,
-      "y": 0.5543175487465182,
+      "x": 0.5158730158730159,
+      "y": 0.5682451253481894,
       "uniqueID": "id-61",
       "name": "A first molecule",
       "topLevel": false,
@@ -126,7 +152,13 @@
           "atomType": "Output",
           "x": 0.98,
           "y": 0.5,
-          "uniqueID": "id-63"
+          "uniqueID": "id-63",
+          "ioValues": [
+            {
+              "name": "number or geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
         },
         {
           "atomType": "Readme",
@@ -134,6 +166,12 @@
           "y": 0.4428969359331476,
           "uniqueID": "id-65",
           "name": "README",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ],
           "readMeText": "Text inside that first molecule",
           "global": true
         },
@@ -149,7 +187,13 @@
               "atomType": "Output",
               "x": 0.98,
               "y": 0.5,
-              "uniqueID": "id-69"
+              "uniqueID": "id-69",
+              "ioValues": [
+                {
+                  "name": "number or geometry",
+                  "ioValue": "__GEOMETRY_INPUT__"
+                }
+              ]
             },
             {
               "atomType": "Readme",
@@ -157,15 +201,107 @@
               "y": 0.467966573816156,
               "uniqueID": "id-78",
               "name": "README",
+              "ioValues": [
+                {
+                  "name": "geometry",
+                  "ioValue": "__GEOMETRY_INPUT__"
+                }
+              ],
               "readMeText": "Some text inside the inner molecule",
               "global": true
+            },
+            {
+              "atomType": "Circle",
+              "x": 0.48611111111111116,
+              "y": 0.5710306406685237,
+              "uniqueID": "id-110",
+              "ioValues": [
+                {
+                  "name": "diameter",
+                  "ioValue": 10
+                }
+              ]
+            },
+            {
+              "atomType": "Extrude",
+              "x": 0.5912698412698413,
+              "y": 0.24512534818941506,
+              "uniqueID": "id-113",
+              "ioValues": [
+                {
+                  "name": "geometry",
+                  "ioValue": "__GEOMETRY_INPUT__"
+                },
+                {
+                  "name": "height",
+                  "ioValue": 10
+                }
+              ]
+            },
+            {
+              "atomType": "Add-BOM-Tag",
+              "x": 0.7414021164021164,
+              "y": 0.2924791086350975,
+              "uniqueID": "id-117",
+              "name": "Add BOM Tag",
+              "ioValues": [
+                {
+                  "name": "geometry",
+                  "ioValue": "__GEOMETRY_INPUT__"
+                },
+                {
+                  "name": "Item Name",
+                  "ioValue": "Cylinder",
+                  "currentEquation": "Cylinder"
+                },
+                {
+                  "name": "Number Needed",
+                  "ioValue": 1
+                },
+                {
+                  "name": "Cost (USD)",
+                  "ioValue": 0
+                },
+                {
+                  "name": "Source Link",
+                  "ioValue": ""
+                }
+              ],
+              "BOMitem": {
+                "BOMitemName": "Cylinder",
+                "numberNeeded": 1,
+                "costUSD": 0,
+                "source": ""
+              }
             }
           ],
-          "allConnectors": [],
+          "allConnectors": [
+            {
+              "ap2Name": "geometry",
+              "ap1ID": "id-110",
+              "ap2ID": "id-113"
+            },
+            {
+              "ap2Name": "geometry",
+              "ap1ID": "id-113",
+              "ap2ID": "id-117"
+            },
+            {
+              "ap2Name": "number or geometry",
+              "ap1ID": "id-117",
+              "ap2ID": "id-69"
+            }
+          ],
           "fileTypeVersion": 1
         }
       ],
-      "allConnectors": [],
+      "allConnectors": [
+        {
+          "ap2Name": "number or geometry",
+          "ap1ID": "id-67",
+          "ap2ID": "id-63"
+        }
+      ],
       "fileTypeVersion": 1
     }
   ],
