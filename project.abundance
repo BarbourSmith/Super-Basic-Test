@@ -142,8 +142,8 @@
     },
     {
       "atomType": "Molecule",
-      "x": 0.5158730158730159,
-      "y": 0.5682451253481894,
+      "x": 0.5125661375661376,
+      "y": 0.584958217270195,
       "uniqueID": "id-61",
       "name": "A first molecule",
       "topLevel": false,
