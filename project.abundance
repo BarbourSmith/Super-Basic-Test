@@ -142,10 +142,16 @@
     },
     {
       "atomType": "Molecule",
-      "x": 0.5125661375661376,
-      "y": 0.584958217270195,
+      "x": 0.5257936507936508,
+      "y": 0.5710306406685237,
       "uniqueID": "id-61",
       "name": "A first molecule",
+      "ioValues": [
+        {
+          "name": "Input",
+          "ioValue": 10
+        }
+      ],
       "topLevel": false,
       "allAtoms": [
         {
@@ -293,6 +299,12 @@
             }
           ],
           "fileTypeVersion": 1
+        },
+        {
+          "atomType": "Input",
+          "x": 0.025384615384615384,
+          "y": 0.4902506963788301,
+          "uniqueID": "id-167"
         }
       ],
       "allConnectors": [
@@ -302,6 +314,42 @@
           "ap2ID": "id-63"
         }
       ],
+      "fileTypeVersion": 1
+    },
+    {
+      "atomType": "Molecule",
+      "x": 0.5079365079365079,
+      "y": 0.24512534818941506,
+      "uniqueID": "id-160",
+      "name": "Molecule",
+      "ioValues": [
+        {
+          "name": "Input",
+          "ioValue": 10
+        }
+      ],
+      "topLevel": false,
+      "allAtoms": [
+        {
+          "atomType": "Output",
+          "x": 0.98,
+          "y": 0.5,
+          "uniqueID": "id-162",
+          "ioValues": [
+            {
+              "name": "number or geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Input",
+          "x": 0.025384615384615384,
+          "y": 0.44011142061281333,
+          "uniqueID": "id-164"
+        }
+      ],
+      "allConnectors": [],
       "fileTypeVersion": 1
     }
   ],
