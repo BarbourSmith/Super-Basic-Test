@@ -142,6 +142,43 @@
     },
     {
       "atomType": "Molecule",
+      "x": 0.5079365079365079,
+      "y": 0.24512534818941506,
+      "uniqueID": "id-160",
+      "name": "Molecule",
+      "ioValues": [
+        {
+          "name": "Input",
+          "ioValue": 10
+        }
+      ],
+      "topLevel": false,
+      "allAtoms": [
+        {
+          "atomType": "Output",
+          "x": 0.98,
+          "y": 0.5,
+          "uniqueID": "id-162",
+          "ioValues": [
+            {
+              "name": "number or geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Input",
+          "x": 0.025384615384615384,
+          "y": 0.15384615384615385,
+          "uniqueID": "id-164",
+          "type": "number"
+        }
+      ],
+      "allConnectors": [],
+      "fileTypeVersion": 1
+    },
+    {
+      "atomType": "Molecule",
       "x": 0.5257936507936508,
       "y": 0.5710306406685237,
       "uniqueID": "id-61",
@@ -182,9 +219,16 @@
           "global": true
         },
         {
+          "atomType": "Input",
+          "x": 0.025384615384615384,
+          "y": 0.15384615384615385,
+          "uniqueID": "id-167",
+          "type": "number"
+        },
+        {
           "atomType": "Molecule",
-          "x": 0.42727272727272725,
-          "y": 0.6100278551532033,
+          "x": 0.371031746031746,
+          "y": 0.5527777777777778,
           "uniqueID": "id-67",
           "name": "An inner molecule",
           "topLevel": false,
@@ -301,10 +345,34 @@
           "fileTypeVersion": 1
         },
         {
-          "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.4902506963788301,
-          "uniqueID": "id-167"
+          "atomType": "Export",
+          "x": 0.6732804232804233,
+          "y": 0.7583333333333333,
+          "uniqueID": "id-218",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "File Type",
+              "ioValue": "STL",
+              "currentEquation": "STL"
+            },
+            {
+              "name": "Resolution (dpi)",
+              "ioValue": 96
+            },
+            {
+              "name": "Part Name",
+              "ioValue": "Brack 1",
+              "currentEquation": "Brack 1"
+            }
+          ],
+          "type": null,
+          "resolution": 96,
+          "importIndex": 0,
+          "partName": "Brack 1"
         }
       ],
       "allConnectors": [
@@ -312,44 +380,13 @@
           "ap2Name": "number or geometry",
           "ap1ID": "id-67",
           "ap2ID": "id-63"
-        }
-      ],
-      "fileTypeVersion": 1
-    },
-    {
-      "atomType": "Molecule",
-      "x": 0.5079365079365079,
-      "y": 0.24512534818941506,
-      "uniqueID": "id-160",
-      "name": "Molecule",
-      "ioValues": [
-        {
-          "name": "Input",
-          "ioValue": 10
-        }
-      ],
-      "topLevel": false,
-      "allAtoms": [
-        {
-          "atomType": "Output",
-          "x": 0.98,
-          "y": 0.5,
-          "uniqueID": "id-162",
-          "ioValues": [
-            {
-              "name": "number or geometry",
-              "ioValue": "__GEOMETRY_INPUT__"
-            }
-          ]
         },
         {
-          "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.44011142061281333,
-          "uniqueID": "id-164"
+          "ap2Name": "geometry",
+          "ap1ID": "id-67",
+          "ap2ID": "id-218"
         }
       ],
-      "allConnectors": [],
       "fileTypeVersion": 1
     }
   ],
