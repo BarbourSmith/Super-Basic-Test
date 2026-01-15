@@ -4,6 +4,12 @@
   "y": 0,
   "uniqueID": "046c5bf9-161a-4093-8fb8-d2a4cd861a57",
   "name": "Super-Basic-Test",
+  "ioValues": [
+    {
+      "name": "An_Input",
+      "ioValue": 10
+    }
+  ],
   "topLevel": true,
   "allAtoms": [
     {
@@ -33,7 +39,7 @@
     {
       "atomType": "Rotate",
       "x": 0.4404761904761905,
-      "y": 0.766016713091922,
+      "y": 0.7583333333333333,
       "uniqueID": "id-18",
       "ioValues": [
         {
@@ -56,8 +62,8 @@
     },
     {
       "atomType": "Readme",
-      "x": 0.38227513227513227,
-      "y": 0.34818941504178275,
+      "x": 0.11904761904761904,
+      "y": 0.25555555555555554,
       "uniqueID": "id-39",
       "name": "README",
       "ioValues": [
@@ -388,6 +394,28 @@
         }
       ],
       "fileTypeVersion": 1
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.5138888888888888,
+      "uniqueID": "id-223",
+      "name": "An_Input"
+    },
+    {
+      "atomType": "Readme",
+      "x": 0.18386243386243387,
+      "y": 0.6583333333333333,
+      "uniqueID": "id-226",
+      "name": "README",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ],
+      "readMeText": "More Readme",
+      "global": true
     }
   ],
   "allConnectors": [
