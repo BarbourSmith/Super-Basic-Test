@@ -68,11 +68,33 @@
       "name": "README",
       "ioValues": [
         {
-          "name": "geometry",
+          "name": "value",
           "ioValue": "__GEOMETRY_INPUT__"
         }
       ],
       "readMeText": "Lets see if this saves",
+      "global": true
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.15384615384615385,
+      "uniqueID": "id-223",
+      "name": "An_Input"
+    },
+    {
+      "atomType": "Readme",
+      "x": 0.18386243386243387,
+      "y": 0.6583333333333333,
+      "uniqueID": "id-226",
+      "name": "README",
+      "ioValues": [
+        {
+          "name": "value",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ],
+      "readMeText": "More Readme",
       "global": true
     },
     {
@@ -217,7 +239,7 @@
           "name": "README",
           "ioValues": [
             {
-              "name": "geometry",
+              "name": "value",
               "ioValue": "__GEOMETRY_INPUT__"
             }
           ],
@@ -230,6 +252,36 @@
           "y": 0.15384615384615385,
           "uniqueID": "id-167",
           "type": "number"
+        },
+        {
+          "atomType": "Export",
+          "x": 0.6732804232804233,
+          "y": 0.7583333333333333,
+          "uniqueID": "id-218",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "File Type",
+              "ioValue": "STL",
+              "currentEquation": "STL"
+            },
+            {
+              "name": "Resolution (dpi)",
+              "ioValue": 96
+            },
+            {
+              "name": "Part Name",
+              "ioValue": "Brack 1",
+              "currentEquation": "Brack 1"
+            }
+          ],
+          "type": null,
+          "resolution": 96,
+          "importIndex": 0,
+          "partName": "Brack 1"
         },
         {
           "atomType": "Molecule",
@@ -259,7 +311,7 @@
               "name": "README",
               "ioValues": [
                 {
-                  "name": "geometry",
+                  "name": "value",
                   "ioValue": "__GEOMETRY_INPUT__"
                 }
               ],
@@ -349,36 +401,6 @@
             }
           ],
           "fileTypeVersion": 1
-        },
-        {
-          "atomType": "Export",
-          "x": 0.6732804232804233,
-          "y": 0.7583333333333333,
-          "uniqueID": "id-218",
-          "ioValues": [
-            {
-              "name": "geometry",
-              "ioValue": "__GEOMETRY_INPUT__"
-            },
-            {
-              "name": "File Type",
-              "ioValue": "STL",
-              "currentEquation": "STL"
-            },
-            {
-              "name": "Resolution (dpi)",
-              "ioValue": 96
-            },
-            {
-              "name": "Part Name",
-              "ioValue": "Brack 1",
-              "currentEquation": "Brack 1"
-            }
-          ],
-          "type": null,
-          "resolution": 96,
-          "importIndex": 0,
-          "partName": "Brack 1"
         }
       ],
       "allConnectors": [
@@ -396,26 +418,16 @@
       "fileTypeVersion": 1
     },
     {
-      "atomType": "Input",
-      "x": 0.025384615384615384,
-      "y": 0.5138888888888888,
-      "uniqueID": "id-223",
-      "name": "An_Input"
-    },
-    {
-      "atomType": "Readme",
-      "x": 0.18386243386243387,
-      "y": 0.6583333333333333,
-      "uniqueID": "id-226",
-      "name": "README",
-      "ioValues": [
-        {
-          "name": "geometry",
-          "ioValue": "__GEOMETRY_INPUT__"
-        }
-      ],
-      "readMeText": "More Readme",
-      "global": true
+      "atomType": "Import",
+      "x": 0.35449735449735453,
+      "y": 0.33888888888888885,
+      "uniqueID": "id-288",
+      "fileName": "3D_My Board_2026-03-06.step",
+      "name": "Import",
+      "type": "STEP",
+      "repoOwner": "BarbourSmith",
+      "repoName": "Super-Basic-Test",
+      "SVGwidth": 10
     }
   ],
   "allConnectors": [
