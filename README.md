@@ -8,15 +8,23 @@
 
  Lets see if this saves
 
+**Value:** __GEOMETRY_INPUT__
+
 More Readme
+
+**Value:** __GEOMETRY_INPUT__
 
 ### A first molecule
 
 Text inside that first molecule
 
+**Value:** __GEOMETRY_INPUT__
+
 ### An inner molecule
 
 Some text inside the inner molecule
+
+**Value:** __GEOMETRY_INPUT__
 
 
 
