@@ -110,6 +110,92 @@
       "SVGwidth": 10
     },
     {
+      "atomType": "Label",
+      "x": 0.5813492063492063,
+      "y": 0.85,
+      "uniqueID": "id-347",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "text",
+          "ioValue": "label",
+          "currentEquation": "label"
+        },
+        {
+          "name": "startPosition",
+          "ioValue": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "endPosition",
+          "ioValue": [
+            10,
+            10,
+            0
+          ]
+        },
+        {
+          "name": "color",
+          "ioValue": "#dd863b",
+          "currentEquation": "#dd863b"
+        }
+      ]
+    },
+    {
+      "atomType": "Move",
+      "x": 0.7235449735449735,
+      "y": 0.8833333333333333,
+      "uniqueID": "id-350",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "xDist",
+          "ioValue": 100
+        },
+        {
+          "name": "yDist",
+          "ioValue": 0
+        },
+        {
+          "name": "zDist",
+          "ioValue": 0
+        }
+      ]
+    },
+    {
+      "atomType": "Rotate",
+      "x": 0.8234126984126985,
+      "y": 0.8138888888888889,
+      "uniqueID": "id-356",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "x-axis degrees",
+          "ioValue": 0
+        },
+        {
+          "name": "y-axis degrees",
+          "ioValue": 0
+        },
+        {
+          "name": "z-axis degrees",
+          "ioValue": 30
+        }
+      ]
+    },
+    {
       "atomType": "Molecule",
       "x": 0.29365079365079366,
       "y": 0.6072423398328691,
@@ -430,78 +516,61 @@
       "fileTypeVersion": 1
     },
     {
-      "atomType": "Label",
-      "x": 0.5813492063492063,
-      "y": 0.85,
-      "uniqueID": "id-347",
+      "atomType": "Rectangle",
+      "x": 0.6018518518518519,
+      "y": 0.31197771587743733,
+      "uniqueID": "id-431",
       "ioValues": [
         {
-          "name": "geometry",
-          "ioValue": "__GEOMETRY_INPUT__"
-        }
-      ],
-      "start": {
-        "x": 0,
-        "y": 0,
-        "z": 0
-      },
-      "end": {
-        "x": 10,
-        "y": 100,
-        "z": 0
-      },
-      "text": "Test",
-      "color": "#F3EFEF"
-    },
-    {
-      "atomType": "Move",
-      "x": 0.7235449735449735,
-      "y": 0.8833333333333333,
-      "uniqueID": "id-350",
-      "ioValues": [
-        {
-          "name": "geometry",
-          "ioValue": "__GEOMETRY_INPUT__"
-        },
-        {
-          "name": "xDist",
+          "name": "x length",
           "ioValue": 100,
           "currentEquation": "100"
         },
         {
-          "name": "yDist",
-          "ioValue": 0
-        },
-        {
-          "name": "zDist",
-          "ioValue": 0
+          "name": "y length",
+          "ioValue": 100,
+          "currentEquation": "100"
         }
       ]
     },
     {
-      "atomType": "Rotate",
-      "x": 0.8234126984126985,
-      "y": 0.8138888888888889,
-      "uniqueID": "id-356",
+      "atomType": "Extrude",
+      "x": 0.6964285714285714,
+      "y": 0.2562674094707521,
+      "uniqueID": "id-435",
       "ioValues": [
         {
           "name": "geometry",
           "ioValue": "__GEOMETRY_INPUT__"
         },
         {
-          "name": "x-axis degrees",
-          "ioValue": 0
-        },
-        {
-          "name": "y-axis degrees",
-          "ioValue": 0
-        },
-        {
-          "name": "z-axis degrees",
-          "ioValue": 30,
-          "currentEquation": "30"
+          "name": "height",
+          "ioValue": 100,
+          "currentEquation": "100"
         }
       ]
+    },
+    {
+      "atomType": "Code",
+      "x": 0.8101851851851852,
+      "y": 0.3899721448467966,
+      "uniqueID": "id-439",
+      "ioValues": [
+        {
+          "name": "shape",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "radius",
+          "ioValue": 5
+        },
+        {
+          "name": "height",
+          "ioValue": 10
+        }
+      ],
+      "codeVersion": 1,
+      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\n\nlet importedShape = library[shape];\nlet newPlane = replicad.makePlane()\nlet circDraw = replicad.drawCircle(radius)\nlet sketchCir = circDraw.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\n\nlet assembly = await Assembly([importedShape, cylObj]);\nreturn assembly;\n"
     }
   ],
   "allConnectors": [
@@ -517,11 +586,6 @@
     },
     {
       "ap2Name": "geometry",
-      "ap1ID": "id-6",
-      "ap2ID": "id-18"
-    },
-    {
-      "ap2Name": "geometry",
       "ap1ID": "id-347",
       "ap2ID": "id-350"
     },
@@ -529,6 +593,21 @@
       "ap2Name": "geometry",
       "ap1ID": "id-350",
       "ap2ID": "id-356"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-6",
+      "ap2ID": "id-18"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-431",
+      "ap2ID": "id-435"
+    },
+    {
+      "ap2Name": "shape",
+      "ap1ID": "id-435",
+      "ap2ID": "id-439"
     }
   ],
   "unitsKey": "MM",
