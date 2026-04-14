@@ -99,8 +99,8 @@
     },
     {
       "atomType": "Import",
-      "x": 0.35449735449735453,
-      "y": 0.33888888888888885,
+      "x": 0.19891500904159132,
+      "y": 0.46239554317548753,
       "uniqueID": "id-288",
       "fileName": "3D_My Board_2026-03-06.step",
       "name": "Import",
@@ -196,6 +196,62 @@
       ]
     },
     {
+      "atomType": "Rectangle",
+      "x": 0.39692585895117544,
+      "y": 0.11977715877437325,
+      "uniqueID": "id-431",
+      "ioValues": [
+        {
+          "name": "x length",
+          "ioValue": 10,
+          "currentEquation": "10"
+        },
+        {
+          "name": "y length",
+          "ioValue": 10,
+          "currentEquation": "10"
+        }
+      ]
+    },
+    {
+      "atomType": "Extrude",
+      "x": 0.5488245931283906,
+      "y": 0.14763231197771587,
+      "uniqueID": "id-435",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "height",
+          "ioValue": 100
+        }
+      ]
+    },
+    {
+      "atomType": "Code",
+      "x": 0.8264014466546112,
+      "y": 0.41782729805013924,
+      "uniqueID": "id-439",
+      "ioValues": [
+        {
+          "name": "shape",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "radius",
+          "ioValue": 5
+        },
+        {
+          "name": "height",
+          "ioValue": 10
+        }
+      ],
+      "codeVersion": 1,
+      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\n\nlet importedShape = library[shape];\nlet newPlane = replicad.makePlane()\nlet circDraw = replicad.drawCircle(radius)\nlet sketchCir = circDraw.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\n\nlet assembly = await Assembly([importedShape, cylObj]);\nreturn assembly;\n"
+    },
+    {
       "atomType": "Molecule",
       "x": 0.29365079365079366,
       "y": 0.6072423398328691,
@@ -268,8 +324,8 @@
     },
     {
       "atomType": "Molecule",
-      "x": 0.5079365079365079,
-      "y": 0.24512534818941506,
+      "x": 0.42766726943942135,
+      "y": 0.5821727019498607,
       "uniqueID": "id-160",
       "name": "Molecule",
       "ioValues": [
@@ -516,69 +572,31 @@
       "fileTypeVersion": 1
     },
     {
-      "atomType": "Rectangle",
-      "x": 0.6018518518518519,
-      "y": 0.31197771587743733,
-      "uniqueID": "id-431",
-      "ioValues": [
-        {
-          "name": "x length",
-          "ioValue": 100,
-          "currentEquation": "100"
-        },
-        {
-          "name": "y length",
-          "ioValue": 100,
-          "currentEquation": "100"
-        }
-      ]
-    },
-    {
-      "atomType": "Extrude",
-      "x": 0.6964285714285714,
-      "y": 0.2562674094707521,
-      "uniqueID": "id-435",
+      "atomType": "Move",
+      "x": 0.6488245931283906,
+      "y": 0.14763231197771587,
+      "uniqueID": "id-524",
       "ioValues": [
         {
           "name": "geometry",
           "ioValue": "__GEOMETRY_INPUT__"
         },
         {
-          "name": "height",
-          "ioValue": 100,
-          "currentEquation": "100"
+          "name": "xDist",
+          "ioValue": 13
+        },
+        {
+          "name": "yDist",
+          "ioValue": 0
+        },
+        {
+          "name": "zDist",
+          "ioValue": 0
         }
       ]
-    },
-    {
-      "atomType": "Code",
-      "x": 0.8101851851851852,
-      "y": 0.3899721448467966,
-      "uniqueID": "id-439",
-      "ioValues": [
-        {
-          "name": "shape",
-          "ioValue": "__GEOMETRY_INPUT__"
-        },
-        {
-          "name": "radius",
-          "ioValue": 5
-        },
-        {
-          "name": "height",
-          "ioValue": 10
-        }
-      ],
-      "codeVersion": 1,
-      "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\n\nlet importedShape = library[shape];\nlet newPlane = replicad.makePlane()\nlet circDraw = replicad.drawCircle(radius)\nlet sketchCir = circDraw.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\n\nlet assembly = await Assembly([importedShape, cylObj]);\nreturn assembly;\n"
     }
   ],
   "allConnectors": [
-    {
-      "ap2Name": "number or geometry",
-      "ap1ID": "35d189b5-04d6-437c-b546-b49158ddd968",
-      "ap2ID": "dddabc94-fc33-4854-a6f0-1a8dc5125934"
-    },
     {
       "ap2Name": "geometry",
       "ap1ID": "id-18",
@@ -596,17 +614,27 @@
     },
     {
       "ap2Name": "geometry",
-      "ap1ID": "id-6",
-      "ap2ID": "id-18"
-    },
-    {
-      "ap2Name": "geometry",
       "ap1ID": "id-431",
       "ap2ID": "id-435"
     },
     {
-      "ap2Name": "shape",
+      "ap2Name": "geometry",
       "ap1ID": "id-435",
+      "ap2ID": "id-524"
+    },
+    {
+      "ap2Name": "number or geometry",
+      "ap1ID": "id-439",
+      "ap2ID": "dddabc94-fc33-4854-a6f0-1a8dc5125934"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-6",
+      "ap2ID": "id-18"
+    },
+    {
+      "ap2Name": "shape",
+      "ap1ID": "id-524",
       "ap2ID": "id-439"
     }
   ],
