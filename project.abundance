@@ -203,13 +203,11 @@
       "ioValues": [
         {
           "name": "x length",
-          "ioValue": 10,
-          "currentEquation": "10"
+          "ioValue": 10
         },
         {
           "name": "y length",
-          "ioValue": 10,
-          "currentEquation": "10"
+          "ioValue": 10
         }
       ]
     },
@@ -250,6 +248,30 @@
       ],
       "codeVersion": 1,
       "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\n\nlet importedShape = library[shape];\nlet newPlane = replicad.makePlane()\nlet circDraw = replicad.drawCircle(radius)\nlet sketchCir = circDraw.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\n\nlet assembly = await Assembly([importedShape, cylObj]);\nreturn assembly;\n"
+    },
+    {
+      "atomType": "Move",
+      "x": 0.6488245931283906,
+      "y": 0.14763231197771587,
+      "uniqueID": "id-524",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "xDist",
+          "ioValue": 13
+        },
+        {
+          "name": "yDist",
+          "ioValue": 0
+        },
+        {
+          "name": "zDist",
+          "ioValue": 0
+        }
+      ]
     },
     {
       "atomType": "Molecule",
@@ -572,28 +594,26 @@
       "fileTypeVersion": 1
     },
     {
-      "atomType": "Move",
-      "x": 0.6488245931283906,
-      "y": 0.14763231197771587,
-      "uniqueID": "id-524",
+      "atomType": "Code",
+      "x": 0.325497287522604,
+      "y": 0.3231197771587744,
+      "uniqueID": "id-614",
       "ioValues": [
         {
-          "name": "geometry",
-          "ioValue": "__GEOMETRY_INPUT__"
+          "name": "teeth",
+          "ioValue": 20
         },
         {
-          "name": "xDist",
-          "ioValue": 13
+          "name": "pitch",
+          "ioValue": 5
         },
         {
-          "name": "yDist",
-          "ioValue": 0
-        },
-        {
-          "name": "zDist",
-          "ioValue": 0
+          "name": "thickness",
+          "ioValue": 5
         }
-      ]
+      ],
+      "codeVersion": 1,
+      "code": "const Inputs = [\n  { inputName: \"teeth\", type: \"number\", defaultValue: 20 },\n  { inputName: \"pitch\", type: \"number\", defaultValue: 5 },\n  { inputName: \"thickness\", type: \"number\", defaultValue: 5 },\n];\n\nconst N = Math.max(3, Math.round(teeth));\nconst p = pitch;\nconst m = p / Math.PI;                         // module\nconst pitchR = (N * p) / (2 * Math.PI);        // pitch radius\nconst addR = pitchR + m;                       // addendum (tooth tip)\nconst rootR = Math.max(0.1, pitchR - 1.25 * m); // dedendum (root)\n\nconst toothAngle = (2 * Math.PI) / N;\nconst half = toothAngle / 2;\nconst tipHalf = half * 0.35;   // tooth tip width\nconst rootHalf = half * 0.9;   // tooth root width\n\nconst pts = [];\nfor (let i = 0; i < N; i++) {\n  const a = i * toothAngle;\n  pts.push([rootR * Math.cos(a - rootHalf), rootR * Math.sin(a - rootHalf)]);\n  pts.push([addR  * Math.cos(a - tipHalf),  addR  * Math.sin(a - tipHalf)]);\n  pts.push([addR  * Math.cos(a + tipHalf),  addR  * Math.sin(a + tipHalf)]);\n  pts.push([rootR * Math.cos(a + rootHalf), rootR * Math.sin(a + rootHalf)]);\n}\n\nlet pen = replicad.draw(pts[0]);\nfor (let i = 1; i < pts.length; i++) pen = pen.lineTo(pts[i]);\nconst drawing = pen.close();\n\nconst solid = drawing.sketchOnPlane().extrude(thickness);\nreturn { geometry: [solid], dimension: \"3D\", tags: [], color: \"#aad7f2\", plane: null, bom: [] };"
     }
   ],
   "allConnectors": [
@@ -628,14 +648,14 @@
       "ap2ID": "dddabc94-fc33-4854-a6f0-1a8dc5125934"
     },
     {
-      "ap2Name": "geometry",
-      "ap1ID": "id-6",
-      "ap2ID": "id-18"
-    },
-    {
       "ap2Name": "shape",
       "ap1ID": "id-524",
       "ap2ID": "id-439"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-6",
+      "ap2ID": "id-18"
     }
   ],
   "unitsKey": "MM",
