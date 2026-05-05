@@ -246,7 +246,7 @@
           "ioValue": 10
         }
       ],
-      "codeVersion": 1,
+      "interpreterVersion": 0,
       "code": "\n// Example Code\nconst Inputs = [\n  { inputName: \"shape\", type: \"geometry\", defaultValue: null },\n  { inputName: \"radius\", type: \"number\", defaultValue: 5 },\n  { inputName: \"height\", type: \"number\", defaultValue: 10 }\n];\n\nlet importedShape = library[shape];\nlet newPlane = replicad.makePlane()\nlet circDraw = replicad.drawCircle(radius)\nlet sketchCir = circDraw.sketchOnPlane(newPlane)\nlet cyl = sketchCir.extrude(height)\nlet cylObj = {\n  geometry: [cyl],\n  dimension: \"3D\",\n  tags: [\"createdCylinder\"],\n  color: \"#A3CE5B\",\n  plane: null,\n  bom: []\n};\n\nlet assembly = await Assembly([importedShape, cylObj]);\nreturn assembly;\n"
     },
     {
@@ -272,6 +272,28 @@
           "ioValue": 0
         }
       ]
+    },
+    {
+      "atomType": "Code",
+      "x": 0.325497287522604,
+      "y": 0.3231197771587744,
+      "uniqueID": "id-614",
+      "ioValues": [
+        {
+          "name": "teeth",
+          "ioValue": 20
+        },
+        {
+          "name": "pitch",
+          "ioValue": 5
+        },
+        {
+          "name": "thickness",
+          "ioValue": 5
+        }
+      ],
+      "interpreterVersion": 0,
+      "code": "const Inputs = [\n  { inputName: \"teeth\", type: \"number\", defaultValue: 20 },\n  { inputName: \"pitch\", type: \"number\", defaultValue: 5 },\n  { inputName: \"thickness\", type: \"number\", defaultValue: 5 },\n];\n\nconst N = Math.max(3, Math.round(teeth));\nconst p = pitch;\nconst m = p / Math.PI;                         // module\nconst pitchR = (N * p) / (2 * Math.PI);        // pitch radius\nconst addR = pitchR + m;                       // addendum (tooth tip)\nconst rootR = Math.max(0.1, pitchR - 1.25 * m); // dedendum (root)\n\nconst toothAngle = (2 * Math.PI) / N;\nconst half = toothAngle / 2;\nconst tipHalf = half * 0.35;   // tooth tip width\nconst rootHalf = half * 0.9;   // tooth root width\n\nconst pts = [];\nfor (let i = 0; i < N; i++) {\n  const a = i * toothAngle;\n  pts.push([rootR * Math.cos(a - rootHalf), rootR * Math.sin(a - rootHalf)]);\n  pts.push([addR  * Math.cos(a - tipHalf),  addR  * Math.sin(a - tipHalf)]);\n  pts.push([addR  * Math.cos(a + tipHalf),  addR  * Math.sin(a + tipHalf)]);\n  pts.push([rootR * Math.cos(a + rootHalf), rootR * Math.sin(a + rootHalf)]);\n}\n\nlet pen = replicad.draw(pts[0]);\nfor (let i = 1; i < pts.length; i++) pen = pen.lineTo(pts[i]);\nconst drawing = pen.close();\n\nconst solid = drawing.sketchOnPlane().extrude(thickness);\nreturn { geometry: [solid], dimension: \"3D\", tags: [], color: \"#aad7f2\", plane: null, bom: [] };"
     },
     {
       "atomType": "Molecule",
@@ -595,25 +617,26 @@
     },
     {
       "atomType": "Code",
-      "x": 0.325497287522604,
-      "y": 0.3231197771587744,
-      "uniqueID": "id-614",
+      "x": 0.5998677248677249,
+      "y": 0.37325905292479106,
+      "uniqueID": "id-708",
       "ioValues": [
         {
-          "name": "teeth",
-          "ioValue": 20
+          "name": "shape",
+          "ioValue": "__GEOMETRY_INPUT__"
         },
         {
-          "name": "pitch",
-          "ioValue": 5
+          "name": "count",
+          "ioValue": 6
         },
         {
-          "name": "thickness",
-          "ioValue": 5
+          "name": "offset",
+          "ioValue": 15
         }
       ],
-      "codeVersion": 1,
-      "code": "const Inputs = [\n  { inputName: \"teeth\", type: \"number\", defaultValue: 20 },\n  { inputName: \"pitch\", type: \"number\", defaultValue: 5 },\n  { inputName: \"thickness\", type: \"number\", defaultValue: 5 },\n];\n\nconst N = Math.max(3, Math.round(teeth));\nconst p = pitch;\nconst m = p / Math.PI;                         // module\nconst pitchR = (N * p) / (2 * Math.PI);        // pitch radius\nconst addR = pitchR + m;                       // addendum (tooth tip)\nconst rootR = Math.max(0.1, pitchR - 1.25 * m); // dedendum (root)\n\nconst toothAngle = (2 * Math.PI) / N;\nconst half = toothAngle / 2;\nconst tipHalf = half * 0.35;   // tooth tip width\nconst rootHalf = half * 0.9;   // tooth root width\n\nconst pts = [];\nfor (let i = 0; i < N; i++) {\n  const a = i * toothAngle;\n  pts.push([rootR * Math.cos(a - rootHalf), rootR * Math.sin(a - rootHalf)]);\n  pts.push([addR  * Math.cos(a - tipHalf),  addR  * Math.sin(a - tipHalf)]);\n  pts.push([addR  * Math.cos(a + tipHalf),  addR  * Math.sin(a + tipHalf)]);\n  pts.push([rootR * Math.cos(a + rootHalf), rootR * Math.sin(a + rootHalf)]);\n}\n\nlet pen = replicad.draw(pts[0]);\nfor (let i = 1; i < pts.length; i++) pen = pen.lineTo(pts[i]);\nconst drawing = pen.close();\n\nconst solid = drawing.sketchOnPlane().extrude(thickness);\nreturn { geometry: [solid], dimension: \"3D\", tags: [], color: \"#aad7f2\", plane: null, bom: [] };"
+      "interpreterVersion": 1,
+      "code": "\n/**\n * This code atom implements a simple linear layout funtion which repeats\n * shape count times in the positive X direction with offset space\n * between each. Works for either 2D or 3D shapes. Negative offset\n * and negative counts invert the direction.\n * \n * Notice that defaults are set for both count and offset.\n */\nfunction run(shape: Assembly, count: number = 1, offset: number = 5) {\n  if (count == 0) {\n    return []\n  }\n  const isReversed = count < 0;\n  if (isReversed) {\n    offset = -1 * offset\n  }\n  count = Math.abs(count)\n\n  const result = [shape]\n  for (let i = 1; i < count; i++) {\n    const movedCopy = new Assembly(shape).onLeafs((leaf) => {\n      if (leaf.is2D()) {\n        leaf.geometry = leaf.geometry.translate(offset * i, 0)\n      } else if (leaf.geometry instanceof replicad._3DShape) {\n        leaf.geometry = leaf.geometry.translate(offset * i, 0, 0)\n      }\n      return leaf;\n    })\n\n    if (movedCopy) {\n      result.push(movedCopy)\n    }\n  }\n\n  return result;\n}\n",
+      "compiledCode": "\"use strict\";\n/**\n * This code atom implements a simple linear layout funtion which repeats\n * shape count times in the positive X direction with offset space\n * between each. Works for either 2D or 3D shapes. Negative offset\n * and negative counts invert the direction.\n *\n * Notice that defaults are set for both count and offset.\n */\nfunction run(shape, count = 1, offset = 5) {\n    if (count == 0) {\n        return [];\n    }\n    const isReversed = count < 0;\n    if (isReversed) {\n        offset = -1 * offset;\n    }\n    count = Math.abs(count);\n    const result = [shape];\n    for (let i = 1; i < count; i++) {\n        const movedCopy = new Assembly(shape).onLeafs((leaf) => {\n            if (leaf.is2D()) {\n                leaf.geometry = leaf.geometry.translate(offset * i, 0);\n            }\n            else if (leaf.geometry instanceof replicad._3DShape) {\n                leaf.geometry = leaf.geometry.translate(offset * i, 0, 0);\n            }\n            return leaf;\n        });\n        if (movedCopy) {\n            result.push(movedCopy);\n        }\n    }\n    return result;\n}\n"
     }
   ],
   "allConnectors": [
@@ -641,6 +664,11 @@
       "ap2Name": "geometry",
       "ap1ID": "id-435",
       "ap2ID": "id-524"
+    },
+    {
+      "ap2Name": "shape",
+      "ap1ID": "id-435",
+      "ap2ID": "id-708"
     },
     {
       "ap2Name": "number or geometry",
