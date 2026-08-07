@@ -19,17 +19,5 @@ More Readme
 
 __GEOMETRY_INPUT__
 
-### A first molecule
-
-Text inside that first molecule
-
-__GEOMETRY_INPUT__
-
-### An inner molecule
-
-Some text inside the inner molecule
-
-__GEOMETRY_INPUT__
-
 
 
