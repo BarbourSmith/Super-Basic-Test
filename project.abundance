@@ -41,8 +41,8 @@
     },
     {
       "atomType": "Input",
-      "x": 0.025384615384615384,
-      "y": 0.15384615384615385,
+      "x": 0.05499999999999999,
+      "y": 0.3333333333333333,
       "uniqueID": "id-223",
       "name": "An_Input"
     },
@@ -125,6 +125,22 @@
       "sortDirection": "Left"
     },
     {
+      "atomType": "Extrude",
+      "x": 0.38293650793650796,
+      "y": 0.7632311977715878,
+      "uniqueID": "id-1420",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "height",
+          "ioValue": 10
+        }
+      ]
+    },
+    {
       "atomType": "GitHubMolecule",
       "x": 0.36177248677248675,
       "y": 0.37325905292479106,
@@ -133,18 +149,15 @@
       "ioValues": [
         {
           "name": "NACA_number",
-          "ioValue": 408,
-          "currentEquation": "408"
+          "ioValue": 408
         },
         {
           "name": "Cord_length",
-          "ioValue": 65,
-          "currentEquation": "65"
+          "ioValue": 65
         },
         {
           "name": "number_of_points",
-          "ioValue": 150,
-          "currentEquation": "150"
+          "ioValue": 150
         }
       ],
       "topLevel": false,
@@ -186,22 +199,22 @@
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.15384615384615385,
+          "x": 0.05499999999999999,
+          "y": 0.3333333333333333,
           "uniqueID": "id-1402",
           "name": "NACA_number"
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.24615384615384617,
+          "x": 0.05499999999999999,
+          "y": 0.5333333333333333,
           "uniqueID": "id-1403",
           "name": "Cord_length"
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.3384615384615385,
+          "x": 0.05499999999999999,
+          "y": 0.7333333333333334,
           "uniqueID": "id-1404",
           "name": "number_of_points"
         }
@@ -257,22 +270,6 @@
       "lastReloadedFromGithubAt": 1787076453651
     },
     {
-      "atomType": "Extrude",
-      "x": 0.38293650793650796,
-      "y": 0.7632311977715878,
-      "uniqueID": "id-1420",
-      "ioValues": [
-        {
-          "name": "geometry",
-          "ioValue": "__GEOMETRY_INPUT__"
-        },
-        {
-          "name": "height",
-          "ioValue": 10
-        }
-      ]
-    },
-    {
       "atomType": "GitHubMolecule",
       "x": 0.5522486772486772,
       "y": 0.7910863509749304,
@@ -289,13 +286,11 @@
         },
         {
           "name": "distX",
-          "ioValue": 0,
-          "currentEquation": "0"
+          "ioValue": 0
         },
         {
           "name": "distY",
-          "ioValue": 10,
-          "currentEquation": "10"
+          "ioValue": 10
         },
         {
           "name": "distZ",
@@ -334,40 +329,40 @@
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.15384615384615385,
+          "x": 0.05499999999999999,
+          "y": 0.3333333333333333,
           "uniqueID": "id-1431",
           "name": "Number",
           "type": "number"
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.24615384615384617,
+          "x": 0.05499999999999999,
+          "y": 0.5333333333333333,
           "uniqueID": "id-1432",
           "name": "Geometry",
           "type": "geometry"
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.3384615384615385,
+          "x": 0.05499999999999999,
+          "y": 0.7333333333333334,
           "uniqueID": "id-1433",
           "name": "distX",
           "type": "number"
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.4307692307692308,
+          "x": 0.05499999999999999,
+          "y": 0.9333333333333333,
           "uniqueID": "id-1434",
           "name": "distY",
           "type": "number"
         },
         {
           "atomType": "Input",
-          "x": 0.025384615384615384,
-          "y": 0.5230769230769231,
+          "x": 0.05499999999999999,
+          "y": 0.95,
           "uniqueID": "id-1435",
           "name": "distZ",
           "type": "number"
@@ -624,6 +619,18 @@
       ],
       "allConnectors": [],
       "fileTypeVersion": 1
+    },
+    {
+      "atomType": "Import",
+      "x": 0.1687871077184054,
+      "y": 0.8456140350877193,
+      "uniqueID": "id-1577",
+      "fileName": "dinosaur-motel-sign-panel.svg",
+      "name": "Import",
+      "type": "SVG",
+      "repoOwner": "BarbourSmith",
+      "repoName": "Super-Basic-Test",
+      "SVGwidth": 400
     }
   ],
   "allConnectors": [
@@ -643,14 +650,14 @@
       "ap2ID": "id-1376"
     },
     {
-      "ap2Name": "geometry",
-      "ap1ID": "id-1405",
-      "ap2ID": "id-1420"
-    },
-    {
       "ap2Name": "Geometry",
       "ap1ID": "id-1420",
       "ap2ID": "id-1443"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-1405",
+      "ap2ID": "id-1420"
     }
   ],
   "unitsKey": "MM",
