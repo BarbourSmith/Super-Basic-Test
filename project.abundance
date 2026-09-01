@@ -25,46 +25,9 @@
       ]
     },
     {
-      "atomType": "Readme",
-      "x": 0.11904761904761904,
-      "y": 0.25555555555555554,
-      "uniqueID": "id-39",
-      "name": "README",
-      "ioValues": [
-        {
-          "name": "value",
-          "ioValue": "__GEOMETRY_INPUT__"
-        }
-      ],
-      "readMeText": "Lets see if this saves",
-      "global": true
-    },
-    {
-      "atomType": "Input",
-      "x": 0.05499999999999999,
-      "y": 0.3333333333333333,
-      "uniqueID": "id-223",
-      "name": "An_Input"
-    },
-    {
-      "atomType": "Readme",
-      "x": 0.18386243386243387,
-      "y": 0.6583333333333333,
-      "uniqueID": "id-226",
-      "name": "README",
-      "ioValues": [
-        {
-          "name": "value",
-          "ioValue": "__GEOMETRY_INPUT__"
-        }
-      ],
-      "readMeText": "More Readme",
-      "global": true
-    },
-    {
       "atomType": "Circle",
-      "x": 0.498015873015873,
-      "y": 0.48467966573816157,
+      "x": 0.5205026455026455,
+      "y": 0.26740947075208915,
       "uniqueID": "id-1369",
       "ioValues": [
         {
@@ -85,14 +48,15 @@
         },
         {
           "name": "height",
-          "ioValue": 3
+          "ioValue": 12,
+          "currentEquation": "12"
         }
       ]
     },
     {
       "atomType": "Gcode",
-      "x": 0.742063492063492,
-      "y": 0.7994428969359332,
+      "x": 0.7414021164021164,
+      "y": 0.8050139275766017,
       "uniqueID": "id-1376",
       "ioValues": [
         {
@@ -105,7 +69,7 @@
         },
         {
           "name": "Passes",
-          "ioValue": 3
+          "ioValue": 10
         },
         {
           "name": "Speed",
@@ -113,7 +77,8 @@
         },
         {
           "name": "Cut Through",
-          "ioValue": 0
+          "ioValue": 2,
+          "currentEquation": "2"
         },
         {
           "name": "Part Name",
@@ -123,22 +88,6 @@
       ],
       "partName": "Super-Basic-Test",
       "sortDirection": "Left"
-    },
-    {
-      "atomType": "Extrude",
-      "x": 0.38293650793650796,
-      "y": 0.7632311977715878,
-      "uniqueID": "id-1420",
-      "ioValues": [
-        {
-          "name": "geometry",
-          "ioValue": "__GEOMETRY_INPUT__"
-        },
-        {
-          "name": "height",
-          "ioValue": 10
-        }
-      ]
     },
     {
       "atomType": "GitHubMolecule",
@@ -199,22 +148,22 @@
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.3333333333333333,
+          "x": 0.025384615384615384,
+          "y": 0.15384615384615385,
           "uniqueID": "id-1402",
           "name": "NACA_number"
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.5333333333333333,
+          "x": 0.025384615384615384,
+          "y": 0.24615384615384617,
           "uniqueID": "id-1403",
           "name": "Cord_length"
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.7333333333333334,
+          "x": 0.025384615384615384,
+          "y": 0.3384615384615385,
           "uniqueID": "id-1404",
           "name": "number_of_points"
         }
@@ -268,6 +217,22 @@
       "unitsKey": "MM",
       "fileTypeVersion": 1,
       "lastReloadedFromGithubAt": 1787076453651
+    },
+    {
+      "atomType": "Extrude",
+      "x": 0.38293650793650796,
+      "y": 0.7632311977715878,
+      "uniqueID": "id-1420",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "height",
+          "ioValue": 10
+        }
+      ]
     },
     {
       "atomType": "GitHubMolecule",
@@ -329,40 +294,40 @@
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.3333333333333333,
+          "x": 0.025384615384615384,
+          "y": 0.15384615384615385,
           "uniqueID": "id-1431",
           "name": "Number",
           "type": "number"
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.5333333333333333,
+          "x": 0.025384615384615384,
+          "y": 0.24615384615384617,
           "uniqueID": "id-1432",
           "name": "Geometry",
           "type": "geometry"
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.7333333333333334,
+          "x": 0.025384615384615384,
+          "y": 0.3384615384615385,
           "uniqueID": "id-1433",
           "name": "distX",
           "type": "number"
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.9333333333333333,
+          "x": 0.025384615384615384,
+          "y": 0.4307692307692308,
           "uniqueID": "id-1434",
           "name": "distY",
           "type": "number"
         },
         {
           "atomType": "Input",
-          "x": 0.05499999999999999,
-          "y": 0.95,
+          "x": 0.025384615384615384,
+          "y": 0.5230769230769231,
           "uniqueID": "id-1435",
           "name": "distZ",
           "type": "number"
@@ -597,30 +562,6 @@
       "lastReloadedFromGithubAt": 1787076607474
     },
     {
-      "atomType": "GitHubMolecule",
-      "x": 0.6038359788359788,
-      "y": 0.48467966573816157,
-      "uniqueID": "id-1487",
-      "name": "Github Molecule",
-      "topLevel": false,
-      "allAtoms": [
-        {
-          "atomType": "Output",
-          "x": 0.98,
-          "y": 0.5,
-          "uniqueID": "id-1489",
-          "ioValues": [
-            {
-              "name": "number or geometry",
-              "ioValue": "__GEOMETRY_INPUT__"
-            }
-          ]
-        }
-      ],
-      "allConnectors": [],
-      "fileTypeVersion": 1
-    },
-    {
       "atomType": "Import",
       "x": 0.1687871077184054,
       "y": 0.8456140350877193,
@@ -631,6 +572,43 @@
       "repoOwner": "BarbourSmith",
       "repoName": "Super-Basic-Test",
       "SVGwidth": 400
+    },
+    {
+      "atomType": "Input",
+      "x": 0.025384615384615384,
+      "y": 0.15384615384615385,
+      "uniqueID": "id-223",
+      "name": "An_Input"
+    },
+    {
+      "atomType": "Readme",
+      "x": 0.18386243386243387,
+      "y": 0.6583333333333333,
+      "uniqueID": "id-226",
+      "name": "README",
+      "ioValues": [
+        {
+          "name": "value",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ],
+      "readMeText": "More Readme",
+      "global": true
+    },
+    {
+      "atomType": "Readme",
+      "x": 0.11904761904761904,
+      "y": 0.25555555555555554,
+      "uniqueID": "id-39",
+      "name": "README",
+      "ioValues": [
+        {
+          "name": "value",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ],
+      "readMeText": "Lets see if this saves",
+      "global": true
     }
   ],
   "allConnectors": [
