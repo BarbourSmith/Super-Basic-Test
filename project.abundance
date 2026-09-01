@@ -82,8 +82,8 @@
         },
         {
           "name": "Part Name",
-          "ioValue": "50mm circle 3mm Depth",
-          "currentEquation": "50mm circle 3mm Depth"
+          "ioValue": "50mm circle 14mm Depth",
+          "currentEquation": "50mm circle 14mm Depth"
         }
       ],
       "partName": "Super-Basic-Test",
