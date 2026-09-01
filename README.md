@@ -2,7 +2,7 @@
 
 # Super-Basic-Test
 
-![](/project.svg)
+![](/project.png)
 
 ## Inputs
 
