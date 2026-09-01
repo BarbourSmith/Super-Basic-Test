@@ -69,7 +69,8 @@
         },
         {
           "name": "Passes",
-          "ioValue": 10
+          "ioValue": 30,
+          "currentEquation": "30"
         },
         {
           "name": "Speed",
@@ -82,8 +83,8 @@
         },
         {
           "name": "Part Name",
-          "ioValue": "50mm circle 14mm Depth",
-          "currentEquation": "50mm circle 14mm Depth"
+          "ioValue": "50mm circle 30 passes 14mm Depth",
+          "currentEquation": "50mm circle 30 passes 14mm Depth"
         }
       ],
       "partName": "Super-Basic-Test",
