@@ -761,11 +761,11 @@
           "ioValues": [
             {
               "name": "OD",
-              "ioValue": 151
+              "ioValue": 152
             },
             {
               "name": "ID",
-              "ioValue": 122
+              "ioValue": 121
             }
           ],
           "topLevel": false,
@@ -806,7 +806,7 @@
               "ioValues": [
                 {
                   "name": "diameter",
-                  "ioValue": 151
+                  "ioValue": 152
                 }
               ]
             },
@@ -818,7 +818,7 @@
               "ioValues": [
                 {
                   "name": "diameter",
-                  "ioValue": 122
+                  "ioValue": 121
                 }
               ]
             },
@@ -906,8 +906,7 @@
             },
             {
               "name": "height",
-              "ioValue": 4,
-              "currentEquation": "4"
+              "ioValue": 6
             }
           ]
         },
@@ -954,7 +953,7 @@
         {
           "atomType": "Export",
           "x": 0.7,
-          "y": 0.6,
+          "y": 0.7,
           "uniqueID": "id-1728",
           "ioValues": [
             {
