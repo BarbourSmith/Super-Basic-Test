@@ -761,11 +761,11 @@
           "ioValues": [
             {
               "name": "OD",
-              "ioValue": 152
+              "ioValue": 153
             },
             {
               "name": "ID",
-              "ioValue": 121
+              "ioValue": 120
             }
           ],
           "topLevel": false,
@@ -806,7 +806,7 @@
               "ioValues": [
                 {
                   "name": "diameter",
-                  "ioValue": 152
+                  "ioValue": 153
                 }
               ]
             },
@@ -818,7 +818,7 @@
               "ioValues": [
                 {
                   "name": "diameter",
-                  "ioValue": 121
+                  "ioValue": 120
                 }
               ]
             },
@@ -906,7 +906,7 @@
             },
             {
               "name": "height",
-              "ioValue": 6
+              "ioValue": 9
             }
           ]
         },
@@ -1014,7 +1014,7 @@
           "ioValues": [
             {
               "name": "diameter",
-              "ioValue": 151
+              "ioValue": 153
             }
           ]
         },
@@ -1026,7 +1026,8 @@
           "ioValues": [
             {
               "name": "diameter",
-              "ioValue": 122
+              "ioValue": 120,
+              "currentEquation": "120"
             }
           ]
         },
@@ -1050,8 +1051,7 @@
             },
             {
               "name": "zDist",
-              "ioValue": 5,
-              "currentEquation": "5"
+              "ioValue": 9
             }
           ]
         },
@@ -1075,8 +1075,7 @@
             },
             {
               "name": "zDist",
-              "ioValue": 5,
-              "currentEquation": "5"
+              "ioValue": 9
             }
           ]
         },
@@ -1101,14 +1100,14 @@
             {
               "name": "Shape 1",
               "ioValue": {
-                "geometry": "move-circle-61-0-0-0",
+                "geometry": "move-circle-60-0-0-0",
                 "dimension": "2D",
                 "tags": [],
                 "plane": {
                   "origin": [
                     0,
                     0,
-                    5
+                    9
                   ],
                   "xDir": [
                     1,
@@ -1180,14 +1179,14 @@
             {
               "name": "Shape 1",
               "ioValue": {
-                "geometry": "move-circle-75.5-0-0-0",
+                "geometry": "move-circle-76.5-0-0-0",
                 "dimension": "2D",
                 "tags": [],
                 "plane": {
                   "origin": [
                     0,
                     0,
-                    5
+                    9
                   ],
                   "xDir": [
                     1,
