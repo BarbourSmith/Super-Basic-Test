@@ -11,13 +11,5 @@
 
 
 
- Lets see if this saves
-
-__GEOMETRY_INPUT__
-
-More Readme
-
-__GEOMETRY_INPUT__
-
-
+ 
 
