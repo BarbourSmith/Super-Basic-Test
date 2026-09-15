@@ -77,9 +77,71 @@
       ]
     },
     {
+      "atomType": "Rectangle",
+      "x": 0.2,
+      "y": 0.8,
+      "uniqueID": "id-2031",
+      "ioValues": [
+        {
+          "name": "x length",
+          "ioValue": 10
+        },
+        {
+          "name": "y length",
+          "ioValue": 10
+        }
+      ]
+    },
+    {
+      "atomType": "Extrude",
+      "x": 0.3,
+      "y": 0.8,
+      "uniqueID": "id-2035",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "height",
+          "ioValue": 10
+        }
+      ]
+    },
+    {
+      "atomType": "Export",
+      "x": 0.4,
+      "y": 0.7,
+      "uniqueID": "id-2039",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "File Type",
+          "ioValue": "STEP",
+          "currentEquation": "STEP"
+        },
+        {
+          "name": "Resolution (dpi)",
+          "ioValue": 96
+        },
+        {
+          "name": "Part Name",
+          "ioValue": "Super-Basic-Test",
+          "currentEquation": "Super-Basic-Test"
+        }
+      ],
+      "type": null,
+      "resolution": 96,
+      "importIndex": 0,
+      "partName": "Super-Basic-Test"
+    },
+    {
       "atomType": "Input",
-      "x": 0.1,
-      "y": 0.6,
+      "x": 0,
+      "y": 0.2,
       "uniqueID": "id-223",
       "name": "An_Input"
     }
@@ -99,6 +161,16 @@
       "ap2Name": "number or geometry",
       "ap1ID": "id-2015",
       "ap2ID": "dddabc94-fc33-4854-a6f0-1a8dc5125934"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-2031",
+      "ap2ID": "id-2035"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-2035",
+      "ap2ID": "id-2039"
     }
   ],
   "unitsKey": "MM",
