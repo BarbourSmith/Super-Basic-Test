@@ -120,8 +120,8 @@
         },
         {
           "name": "File Type",
-          "ioValue": "STEP",
-          "currentEquation": "STEP"
+          "ioValue": "STL",
+          "currentEquation": "STL"
         },
         {
           "name": "Resolution (dpi)",
@@ -137,7 +137,7 @@
           "currentEquation": "Super-Basic-Test"
         }
       ],
-      "type": "STEP",
+      "type": "STL",
       "resolution": 96,
       "importIndex": 0,
       "partName": "Super-Basic-Test"
