@@ -285,19 +285,19 @@
       "ioValues": [
         {
           "name": "Steps",
-          "ioValue": 12
+          "ioValue": 15
         },
         {
           "name": "Step_Rise",
-          "ioValue": 190
+          "ioValue": 192
         },
         {
           "name": "Degrees_Per_Step",
-          "ioValue": 30
+          "ioValue": 35
         },
         {
           "name": "Outer_Radius",
-          "ioValue": 800
+          "ioValue": 805
         }
       ],
       "topLevel": false,
@@ -313,56 +313,6 @@
               "ioValue": "__GEOMETRY_INPUT__"
             }
           ]
-        },
-        {
-          "atomType": "Code",
-          "x": 0.5,
-          "y": 0.5,
-          "uniqueID": "id-2185",
-          "name": "Staircase",
-          "ioValues": [
-            {
-              "name": "steps",
-              "ioValue": 12
-            },
-            {
-              "name": "stepRise",
-              "ioValue": 190
-            },
-            {
-              "name": "degreesPerStep",
-              "ioValue": 30
-            },
-            {
-              "name": "outerRadius",
-              "ioValue": 800
-            },
-            {
-              "name": "poleRadius",
-              "ioValue": 60
-            },
-            {
-              "name": "treadThickness",
-              "ioValue": 40
-            },
-            {
-              "name": "treadOverlapDegrees",
-              "ioValue": 4
-            },
-            {
-              "name": "treadColor",
-              "ioValue": "#C8A27A",
-              "currentEquation": "#C8A27A"
-            },
-            {
-              "name": "poleColor",
-              "ioValue": "#8A8F98",
-              "currentEquation": "#8A8F98"
-            }
-          ],
-          "interpreterVersion": 1,
-          "code": "/**\n * Parametric spiral staircase: wedge-shaped treads wound around a central\n * pole. Lengths are in project units (mm); angles are in degrees.\n */\nfunction run(\n  steps: number = 12,\n  stepRise: number = 190,\n  degreesPerStep: number = 30,\n  outerRadius: number = 800,\n  poleRadius: number = 60,\n  treadThickness: number = 40,\n  treadOverlapDegrees: number = 4,\n  treadColor: string = \"#C8A27A\",\n  poleColor: string = \"#8A8F98\",\n): Assembly[] {\n  const count = Math.max(1, Math.round(steps));\n  if (outerRadius <= poleRadius) {\n    throw new Error(\"outerRadius must be larger than poleRadius\");\n  }\n  if (treadThickness >= stepRise) {\n    throw new Error(\"treadThickness must be smaller than stepRise\");\n  }\n\n  // One tread in plan: an annular wedge from the pole out to outerRadius,\n  // slightly wider than the step angle so neighboring treads overlap.\n  const sweep = ((degreesPerStep + treadOverlapDegrees) * Math.PI) / 180;\n  const at = (r: number, a: number): [number, number] => [\n    r * Math.cos(a),\n    r * Math.sin(a),\n  ];\n  const treadPlan = replicad\n    .draw(at(poleRadius, 0))\n    .lineTo(at(outerRadius, 0))\n    .threePointsArcTo(at(outerRadius, sweep), at(outerRadius, sweep / 2))\n    .lineTo(at(poleRadius, sweep))\n    .threePointsArcTo(at(poleRadius, 0), at(poleRadius, sweep / 2))\n    .close();\n\n  const parts: Assembly[] = [];\n  for (let i = 0; i < count; i++) {\n    const topOfTread = (i + 1) * stepRise;\n    const tread = treadPlan\n      .sketchOnPlane(\"XY\", topOfTread - treadThickness)\n      .extrude(treadThickness)\n      .rotate(i * degreesPerStep, [0, 0, 0], [0, 0, 1]);\n    parts.push(\n      new Assembly({\n        geometry: tread,\n        color: treadColor,\n        tags: [\"tread\"],\n        bom: [\"Stair tread\"],\n      }),\n    );\n  }\n\n  const pole = replicad.makeCylinder(poleRadius, count * stepRise);\n  parts.push(\n    new Assembly({\n      geometry: pole,\n      color: poleColor,\n      tags: [\"pole\"],\n      bom: [\"Center pole\"],\n    }),\n  );\n  return parts;\n}\n",
-          "compiledCode": "\"use strict\";\n/**\n * Parametric spiral staircase: wedge-shaped treads wound around a central\n * pole. Lengths are in project units (mm); angles are in degrees.\n */\nfunction run(steps = 12, stepRise = 190, degreesPerStep = 30, outerRadius = 800, poleRadius = 60, treadThickness = 40, treadOverlapDegrees = 4, treadColor = \"#C8A27A\", poleColor = \"#8A8F98\") {\n    const count = Math.max(1, Math.round(steps));\n    if (outerRadius <= poleRadius) {\n        throw new Error(\"outerRadius must be larger than poleRadius\");\n    }\n    if (treadThickness >= stepRise) {\n        throw new Error(\"treadThickness must be smaller than stepRise\");\n    }\n    // One tread in plan: an annular wedge from the pole out to outerRadius,\n    // slightly wider than the step angle so neighboring treads overlap.\n    const sweep = ((degreesPerStep + treadOverlapDegrees) * Math.PI) / 180;\n    const at = (r, a) => [\n        r * Math.cos(a),\n        r * Math.sin(a),\n    ];\n    const treadPlan = replicad\n        .draw(at(poleRadius, 0))\n        .lineTo(at(outerRadius, 0))\n        .threePointsArcTo(at(outerRadius, sweep), at(outerRadius, sweep / 2))\n        .lineTo(at(poleRadius, sweep))\n        .threePointsArcTo(at(poleRadius, 0), at(poleRadius, sweep / 2))\n        .close();\n    const parts = [];\n    for (let i = 0; i < count; i++) {\n        const topOfTread = (i + 1) * stepRise;\n        const tread = treadPlan\n            .sketchOnPlane(\"XY\", topOfTread - treadThickness)\n            .extrude(treadThickness)\n            .rotate(i * degreesPerStep, [0, 0, 0], [0, 0, 1]);\n        parts.push(new Assembly({\n            geometry: tread,\n            color: treadColor,\n            tags: [\"tread\"],\n            bom: [\"Stair tread\"],\n        }));\n    }\n    const pole = replicad.makeCylinder(poleRadius, count * stepRise);\n    parts.push(new Assembly({\n        geometry: pole,\n        color: poleColor,\n        tags: [\"pole\"],\n        bom: [\"Center pole\"],\n    }));\n    return parts;\n}\n"
         },
         {
           "atomType": "Input",
@@ -399,33 +349,439 @@
           "name": "Outer_Radius",
           "type": "number",
           "options": []
+        },
+        {
+          "atomType": "Constant",
+          "x": 0.1,
+          "y": 0.7,
+          "uniqueID": "id-2482",
+          "name": "Pole_Radius",
+          "value": 60
+        },
+        {
+          "atomType": "Constant",
+          "x": 0.1,
+          "y": 0.8,
+          "uniqueID": "id-2484",
+          "name": "Tread_Thickness",
+          "value": 40
+        },
+        {
+          "atomType": "Constant",
+          "x": 0.1,
+          "y": 0.9,
+          "uniqueID": "id-2486",
+          "name": "Tread_Overlap",
+          "value": 4
+        },
+        {
+          "atomType": "Circle",
+          "x": 0.3,
+          "y": 0.2,
+          "uniqueID": "id-2488",
+          "name": "Outer Circle",
+          "ioValues": [
+            {
+              "name": "diameter",
+              "ioValue": 1610,
+              "currentEquation": "Outer_Radius * 2"
+            }
+          ]
+        },
+        {
+          "atomType": "Circle",
+          "x": 0.3,
+          "y": 0.3,
+          "uniqueID": "id-2491",
+          "name": "Pole Hole",
+          "ioValues": [
+            {
+              "name": "diameter",
+              "ioValue": 120,
+              "currentEquation": "Pole_Radius * 2"
+            }
+          ]
+        },
+        {
+          "atomType": "Difference",
+          "x": 0.4,
+          "y": 0.2,
+          "uniqueID": "id-2494",
+          "name": "Ring",
+          "ioValues": [
+            {
+              "name": "retain",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "remove",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Rectangle",
+          "x": 0.2,
+          "y": 0.8,
+          "uniqueID": "id-2498",
+          "name": "Half Plane",
+          "ioValues": [
+            {
+              "name": "x length",
+              "ioValue": 3220,
+              "currentEquation": "Outer_Radius * 4"
+            },
+            {
+              "name": "y length",
+              "ioValue": 1610,
+              "currentEquation": "Outer_Radius * 2"
+            }
+          ]
+        },
+        {
+          "atomType": "Move",
+          "x": 0.3,
+          "y": 0.5,
+          "uniqueID": "id-2502",
+          "name": "Half Plane Up",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "xDist",
+              "ioValue": 0
+            },
+            {
+              "name": "yDist",
+              "ioValue": 805,
+              "currentEquation": "Outer_Radius"
+            },
+            {
+              "name": "zDist",
+              "ioValue": 0
+            }
+          ]
+        },
+        {
+          "atomType": "Rotate",
+          "x": 0.4,
+          "y": 0.8,
+          "uniqueID": "id-2508",
+          "name": "Half Plane Turned",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "x-axis degrees",
+              "ioValue": 0
+            },
+            {
+              "name": "y-axis degrees",
+              "ioValue": 0
+            },
+            {
+              "name": "z-axis degrees",
+              "ioValue": 39,
+              "currentEquation": "Degrees_Per_Step + Tread_Overlap"
+            }
+          ]
+        },
+        {
+          "atomType": "Difference",
+          "x": 0.5,
+          "y": 0.5,
+          "uniqueID": "id-2514",
+          "name": "Wedge",
+          "ioValues": [
+            {
+              "name": "retain",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "remove",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Intersection",
+          "x": 0.6,
+          "y": 0.3,
+          "uniqueID": "id-2518",
+          "name": "Tread Plan",
+          "ioValues": [
+            {
+              "name": "geometry1",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "geometry2",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Extrude",
+          "x": 0.7,
+          "y": 0.3,
+          "uniqueID": "id-2522",
+          "name": "Tread",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "height",
+              "ioValue": 40,
+              "currentEquation": "Tread_Thickness"
+            }
+          ]
+        },
+        {
+          "atomType": "Move",
+          "x": 0.7,
+          "y": 0.3,
+          "uniqueID": "id-2526",
+          "name": "First Tread",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "xDist",
+              "ioValue": 0
+            },
+            {
+              "name": "yDist",
+              "ioValue": 0
+            },
+            {
+              "name": "zDist",
+              "ioValue": 152,
+              "currentEquation": "Step_Rise - Tread_Thickness"
+            }
+          ]
+        },
+        {
+          "atomType": "Color",
+          "x": 0.8,
+          "y": 0.3,
+          "uniqueID": "id-2532",
+          "name": "Tread Color",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ],
+          "selectedColor": "Tan"
+        },
+        {
+          "atomType": "Code",
+          "x": 0.9,
+          "y": 0.3,
+          "uniqueID": "id-2535",
+          "name": "Helical Pattern",
+          "ioValues": [
+            {
+              "name": "shape",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "count",
+              "ioValue": 15
+            },
+            {
+              "name": "angle",
+              "ioValue": 35
+            },
+            {
+              "name": "rise",
+              "ioValue": 192
+            }
+          ],
+          "interpreterVersion": 1,
+          "code": "/**\n * Helical pattern: like RotatePattern, but each copy also rises.\n * Copy i is rotated i * angle degrees about the Z axis and moved up i * rise.\n */\nfunction run(\n  shape: Assembly,\n  count: number = 12,\n  angle: number = 30,\n  rise: number = 190,\n): Assembly[] {\n  const copies: Assembly[] = [];\n  for (let i = 0; i < Math.round(count); i++) {\n    const copy = new Assembly(shape).onLeafs((leaf) => {\n      if (leaf.is2D()) throw new Error(\"Helical Pattern needs 3D shapes\");\n      leaf.geometry = leaf.geometry\n        .clone()\n        .rotate(angle * i, [0, 0, 0], [0, 0, 1])\n        .translate(0, 0, rise * i);\n      return leaf;\n    });\n    if (copy) copies.push(copy);\n  }\n  return copies;\n}\n",
+          "compiledCode": "\"use strict\";\n/**\n * Helical pattern: like RotatePattern, but each copy also rises.\n * Copy i is rotated i * angle degrees about the Z axis and moved up i * rise.\n */\nfunction run(shape, count = 12, angle = 30, rise = 190) {\n    const copies = [];\n    for (let i = 0; i < Math.round(count); i++) {\n        const copy = new Assembly(shape).onLeafs((leaf) => {\n            if (leaf.is2D())\n                throw new Error(\"Helical Pattern needs 3D shapes\");\n            leaf.geometry = leaf.geometry\n                .clone()\n                .rotate(angle * i, [0, 0, 0], [0, 0, 1])\n                .translate(0, 0, rise * i);\n            return leaf;\n        });\n        if (copy)\n            copies.push(copy);\n    }\n    return copies;\n}\n"
+        },
+        {
+          "atomType": "Circle",
+          "x": 0.6,
+          "y": 0.7,
+          "uniqueID": "id-2548",
+          "name": "Pole Circle",
+          "ioValues": [
+            {
+              "name": "diameter",
+              "ioValue": 120,
+              "currentEquation": "Pole_Radius * 2"
+            }
+          ]
+        },
+        {
+          "atomType": "Extrude",
+          "x": 0.7,
+          "y": 0.7,
+          "uniqueID": "id-2551",
+          "name": "Pole",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "height",
+              "ioValue": 2880,
+              "currentEquation": "Steps * Step_Rise"
+            }
+          ]
+        },
+        {
+          "atomType": "Color",
+          "x": 0.8,
+          "y": 0.7,
+          "uniqueID": "id-2555",
+          "name": "Pole Color",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ],
+          "selectedColor": "Grey"
+        },
+        {
+          "atomType": "Assembly",
+          "x": 0.9,
+          "y": 0.5,
+          "uniqueID": "id-2562",
+          "name": "Staircase Parts",
+          "ioValues": [
+            {
+              "name": "makeDisjoint",
+              "ioValue": true
+            },
+            {
+              "name": "Shape 1",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "Shape2",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "Shape3",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
         }
       ],
       "allConnectors": [
         {
-          "ap2Name": "number or geometry",
-          "ap1ID": "id-2185",
-          "ap2ID": "id-2128"
-        },
-        {
-          "ap2Name": "steps",
+          "ap2Name": "count",
           "ap1ID": "id-2203",
-          "ap2ID": "id-2185"
+          "ap2ID": "id-2535"
         },
         {
-          "ap2Name": "stepRise",
+          "ap2Name": "rise",
           "ap1ID": "id-2206",
-          "ap2ID": "id-2185"
+          "ap2ID": "id-2535"
         },
         {
-          "ap2Name": "degreesPerStep",
+          "ap2Name": "angle",
           "ap1ID": "id-2209",
-          "ap2ID": "id-2185"
+          "ap2ID": "id-2535"
         },
         {
-          "ap2Name": "outerRadius",
-          "ap1ID": "id-2212",
-          "ap2ID": "id-2185"
+          "ap2Name": "retain",
+          "ap1ID": "id-2488",
+          "ap2ID": "id-2494"
+        },
+        {
+          "ap2Name": "remove",
+          "ap1ID": "id-2491",
+          "ap2ID": "id-2494"
+        },
+        {
+          "ap2Name": "geometry1",
+          "ap1ID": "id-2494",
+          "ap2ID": "id-2518"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2498",
+          "ap2ID": "id-2502"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2502",
+          "ap2ID": "id-2508"
+        },
+        {
+          "ap2Name": "retain",
+          "ap1ID": "id-2502",
+          "ap2ID": "id-2514"
+        },
+        {
+          "ap2Name": "remove",
+          "ap1ID": "id-2508",
+          "ap2ID": "id-2514"
+        },
+        {
+          "ap2Name": "geometry2",
+          "ap1ID": "id-2514",
+          "ap2ID": "id-2518"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2518",
+          "ap2ID": "id-2522"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2522",
+          "ap2ID": "id-2526"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2526",
+          "ap2ID": "id-2532"
+        },
+        {
+          "ap2Name": "shape",
+          "ap1ID": "id-2532",
+          "ap2ID": "id-2535"
+        },
+        {
+          "ap2Name": "Shape 1",
+          "ap1ID": "id-2535",
+          "ap2ID": "id-2562"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2548",
+          "ap2ID": "id-2551"
+        },
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2551",
+          "ap2ID": "id-2555"
+        },
+        {
+          "ap2Name": "Shape2",
+          "ap1ID": "id-2555",
+          "ap2ID": "id-2562"
+        },
+        {
+          "ap2Name": "number or geometry",
+          "ap1ID": "id-2562",
+          "ap2ID": "id-2128"
         }
       ],
       "fileTypeVersion": 1
@@ -480,11 +836,6 @@
           "name": "Flexi Octopus",
           "ioValues": [
             {
-              "name": "color",
-              "ioValue": "#E76F51",
-              "currentEquation": "#E76F51"
-            },
-            {
               "name": "footprint",
               "ioValue": 80
             },
@@ -511,6 +862,11 @@
             {
               "name": "eyeSize",
               "ioValue": 3.4
+            },
+            {
+              "name": "color",
+              "ioValue": "#E76F51",
+              "currentEquation": "#E76F51"
             }
           ],
           "interpreterVersion": 1,
