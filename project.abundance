@@ -282,6 +282,24 @@
       "y": 0.6,
       "uniqueID": "id-2126",
       "name": "Spiral Staircase",
+      "ioValues": [
+        {
+          "name": "Steps",
+          "ioValue": 12
+        },
+        {
+          "name": "Step_Rise",
+          "ioValue": 190
+        },
+        {
+          "name": "Degrees_Per_Step",
+          "ioValue": 30
+        },
+        {
+          "name": "Outer_Radius",
+          "ioValue": 800
+        }
+      ],
       "topLevel": false,
       "allAtoms": [
         {
@@ -297,50 +315,117 @@
           ]
         },
         {
-          "atomType": "Rectangle",
-          "x": 0.3,
+          "atomType": "Code",
+          "x": 0.5,
           "y": 0.5,
-          "uniqueID": "id-2130",
-          "name": "Cube Base",
+          "uniqueID": "id-2185",
+          "name": "Staircase",
           "ioValues": [
             {
-              "name": "x length",
-              "ioValue": 20
+              "name": "steps",
+              "ioValue": 12
             },
             {
-              "name": "y length",
-              "ioValue": 20
+              "name": "stepRise",
+              "ioValue": 190
+            },
+            {
+              "name": "degreesPerStep",
+              "ioValue": 30
+            },
+            {
+              "name": "outerRadius",
+              "ioValue": 800
+            },
+            {
+              "name": "poleRadius",
+              "ioValue": 60
+            },
+            {
+              "name": "treadThickness",
+              "ioValue": 40
+            },
+            {
+              "name": "treadOverlapDegrees",
+              "ioValue": 4
+            },
+            {
+              "name": "treadColor",
+              "ioValue": "#C8A27A",
+              "currentEquation": "#C8A27A"
+            },
+            {
+              "name": "poleColor",
+              "ioValue": "#8A8F98",
+              "currentEquation": "#8A8F98"
             }
-          ]
+          ],
+          "interpreterVersion": 1,
+          "code": "/**\n * Parametric spiral staircase: wedge-shaped treads wound around a central\n * pole. Lengths are in project units (mm); angles are in degrees.\n */\nfunction run(\n  steps: number = 12,\n  stepRise: number = 190,\n  degreesPerStep: number = 30,\n  outerRadius: number = 800,\n  poleRadius: number = 60,\n  treadThickness: number = 40,\n  treadOverlapDegrees: number = 4,\n  treadColor: string = \"#C8A27A\",\n  poleColor: string = \"#8A8F98\",\n): Assembly[] {\n  const count = Math.max(1, Math.round(steps));\n  if (outerRadius <= poleRadius) {\n    throw new Error(\"outerRadius must be larger than poleRadius\");\n  }\n  if (treadThickness >= stepRise) {\n    throw new Error(\"treadThickness must be smaller than stepRise\");\n  }\n\n  // One tread in plan: an annular wedge from the pole out to outerRadius,\n  // slightly wider than the step angle so neighboring treads overlap.\n  const sweep = ((degreesPerStep + treadOverlapDegrees) * Math.PI) / 180;\n  const at = (r: number, a: number): [number, number] => [\n    r * Math.cos(a),\n    r * Math.sin(a),\n  ];\n  const treadPlan = replicad\n    .draw(at(poleRadius, 0))\n    .lineTo(at(outerRadius, 0))\n    .threePointsArcTo(at(outerRadius, sweep), at(outerRadius, sweep / 2))\n    .lineTo(at(poleRadius, sweep))\n    .threePointsArcTo(at(poleRadius, 0), at(poleRadius, sweep / 2))\n    .close();\n\n  const parts: Assembly[] = [];\n  for (let i = 0; i < count; i++) {\n    const topOfTread = (i + 1) * stepRise;\n    const tread = treadPlan\n      .sketchOnPlane(\"XY\", topOfTread - treadThickness)\n      .extrude(treadThickness)\n      .rotate(i * degreesPerStep, [0, 0, 0], [0, 0, 1]);\n    parts.push(\n      new Assembly({\n        geometry: tread,\n        color: treadColor,\n        tags: [\"tread\"],\n        bom: [\"Stair tread\"],\n      }),\n    );\n  }\n\n  const pole = replicad.makeCylinder(poleRadius, count * stepRise);\n  parts.push(\n    new Assembly({\n      geometry: pole,\n      color: poleColor,\n      tags: [\"pole\"],\n      bom: [\"Center pole\"],\n    }),\n  );\n  return parts;\n}\n",
+          "compiledCode": "\"use strict\";\n/**\n * Parametric spiral staircase: wedge-shaped treads wound around a central\n * pole. Lengths are in project units (mm); angles are in degrees.\n */\nfunction run(steps = 12, stepRise = 190, degreesPerStep = 30, outerRadius = 800, poleRadius = 60, treadThickness = 40, treadOverlapDegrees = 4, treadColor = \"#C8A27A\", poleColor = \"#8A8F98\") {\n    const count = Math.max(1, Math.round(steps));\n    if (outerRadius <= poleRadius) {\n        throw new Error(\"outerRadius must be larger than poleRadius\");\n    }\n    if (treadThickness >= stepRise) {\n        throw new Error(\"treadThickness must be smaller than stepRise\");\n    }\n    // One tread in plan: an annular wedge from the pole out to outerRadius,\n    // slightly wider than the step angle so neighboring treads overlap.\n    const sweep = ((degreesPerStep + treadOverlapDegrees) * Math.PI) / 180;\n    const at = (r, a) => [\n        r * Math.cos(a),\n        r * Math.sin(a),\n    ];\n    const treadPlan = replicad\n        .draw(at(poleRadius, 0))\n        .lineTo(at(outerRadius, 0))\n        .threePointsArcTo(at(outerRadius, sweep), at(outerRadius, sweep / 2))\n        .lineTo(at(poleRadius, sweep))\n        .threePointsArcTo(at(poleRadius, 0), at(poleRadius, sweep / 2))\n        .close();\n    const parts = [];\n    for (let i = 0; i < count; i++) {\n        const topOfTread = (i + 1) * stepRise;\n        const tread = treadPlan\n            .sketchOnPlane(\"XY\", topOfTread - treadThickness)\n            .extrude(treadThickness)\n            .rotate(i * degreesPerStep, [0, 0, 0], [0, 0, 1]);\n        parts.push(new Assembly({\n            geometry: tread,\n            color: treadColor,\n            tags: [\"tread\"],\n            bom: [\"Stair tread\"],\n        }));\n    }\n    const pole = replicad.makeCylinder(poleRadius, count * stepRise);\n    parts.push(new Assembly({\n        geometry: pole,\n        color: poleColor,\n        tags: [\"pole\"],\n        bom: [\"Center pole\"],\n    }));\n    return parts;\n}\n"
         },
         {
-          "atomType": "Extrude",
-          "x": 0.6,
-          "y": 0.5,
-          "uniqueID": "id-2134",
-          "name": "Cube",
-          "ioValues": [
-            {
-              "name": "geometry",
-              "ioValue": "__GEOMETRY_INPUT__"
-            },
-            {
-              "name": "height",
-              "ioValue": 20
-            }
-          ]
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.2,
+          "uniqueID": "id-2203",
+          "name": "Steps",
+          "type": "number",
+          "options": []
+        },
+        {
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.2,
+          "uniqueID": "id-2206",
+          "name": "Step_Rise",
+          "type": "number",
+          "options": []
+        },
+        {
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.3,
+          "uniqueID": "id-2209",
+          "name": "Degrees_Per_Step",
+          "type": "number",
+          "options": []
+        },
+        {
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.4,
+          "uniqueID": "id-2212",
+          "name": "Outer_Radius",
+          "type": "number",
+          "options": []
         }
       ],
       "allConnectors": [
         {
-          "ap2Name": "geometry",
-          "ap1ID": "id-2130",
-          "ap2ID": "id-2134"
+          "ap2Name": "number or geometry",
+          "ap1ID": "id-2185",
+          "ap2ID": "id-2128"
         },
         {
-          "ap2Name": "number or geometry",
-          "ap1ID": "id-2134",
-          "ap2ID": "id-2128"
+          "ap2Name": "steps",
+          "ap1ID": "id-2203",
+          "ap2ID": "id-2185"
+        },
+        {
+          "ap2Name": "stepRise",
+          "ap1ID": "id-2206",
+          "ap2ID": "id-2185"
+        },
+        {
+          "ap2Name": "degreesPerStep",
+          "ap1ID": "id-2209",
+          "ap2ID": "id-2185"
+        },
+        {
+          "ap2Name": "outerRadius",
+          "ap1ID": "id-2212",
+          "ap2ID": "id-2185"
         }
       ],
       "fileTypeVersion": 1
