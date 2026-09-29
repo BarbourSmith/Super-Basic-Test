@@ -437,6 +437,137 @@
       "uniqueID": "id-223",
       "name": "An_Input",
       "options": []
+    },
+    {
+      "atomType": "Molecule",
+      "x": 0.9,
+      "y": 0.9,
+      "uniqueID": "id-2275",
+      "name": "Octopus",
+      "ioValues": [
+        {
+          "name": "Footprint",
+          "ioValue": 80
+        },
+        {
+          "name": "Segments_Per_Arm",
+          "ioValue": 8
+        },
+        {
+          "name": "Clearance",
+          "ioValue": 0.3
+        }
+      ],
+      "topLevel": false,
+      "allAtoms": [
+        {
+          "atomType": "Output",
+          "x": 1,
+          "y": 0.5,
+          "uniqueID": "id-2277",
+          "ioValues": [
+            {
+              "name": "number or geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Code",
+          "x": 0.5,
+          "y": 0.5,
+          "uniqueID": "id-2279",
+          "name": "Flexi Octopus",
+          "ioValues": [
+            {
+              "name": "color",
+              "ioValue": "#E76F51",
+              "currentEquation": "#E76F51"
+            },
+            {
+              "name": "footprint",
+              "ioValue": 80
+            },
+            {
+              "name": "segmentsPerArm",
+              "ioValue": 8
+            },
+            {
+              "name": "armCount",
+              "ioValue": 8
+            },
+            {
+              "name": "clearance",
+              "ioValue": 0.3
+            },
+            {
+              "name": "pinDiameter",
+              "ioValue": 1.6
+            },
+            {
+              "name": "headHeight",
+              "ioValue": 22
+            },
+            {
+              "name": "eyeSize",
+              "ioValue": 3.4
+            }
+          ],
+          "interpreterVersion": 1,
+          "code": "/**\n * Print-in-place flexi octopus. Prints flat, already assembled; every arm\n * segment swings on its own hinge straight off the bed.\n *\n * Each hinge is a clevis: the inner piece has top and bottom plates joined by\n * a vertical pin; the outer piece has a tongue in the middle layer with a hole\n * around the pin. Horizontal clearance is `clearance`, vertical clearance is\n * `layerGap`. The arms swirl into a pinwheel so the whole octopus fits in a\n * `footprint` x `footprint` square; the curl is chosen automatically.\n * The head is a rounded bulb with big cartoon eyes; the eyes are separate\n * colored parts that merge with the head in a single-color print.\n * Lengths are in mm.\n */\nfunction run(\n  footprint: number = 80,\n  segmentsPerArm: number = 8,\n  armCount: number = 8,\n  clearance: number = 0.3,\n  pinDiameter: number = 1.6,\n  headHeight: number = 21,\n  eyeSize: number = 3.4,\n  color: string = \"#E76F51\",\n): Assembly[] {\n  const segs = Math.max(1, Math.round(segmentsPerArm));\n  const arms = Math.max(3, Math.round(armCount));\n  const c = clearance;\n  const layerGap = 0.4; // two 0.2 mm layers\n  const plate = 1.0; // fork plate thickness\n  const tongue = 1.4; // tongue thickness\n  const T = 2 * plate + 2 * layerGap + tongue; // arm thickness\n  const rp = pinDiameter / 2;\n  const Rd = rp + c + 0.8; // joint radius = half the arm width\n  const L = Rd + c + (Rd + 2 * c) + 1.2; // hinge-to-hinge length\n  const tipLength = Rd + c + 3.5;\n  const Rj0 = 15; // radius of the first hinge on the body\n  const minGap = 0.8;\n  const maxTurn = 45; // posed bend per hinge, well inside its range\n  const limit = footprint / 2 - 0.5;\n\n  type Pt = [number, number];\n  const dist = (a: Pt, b: Pt) => Math.hypot(a[0] - b[0], a[1] - b[1]);\n  // Distance from point p to segment ab.\n  const pointSeg = (p: Pt, a: Pt, b: Pt) => {\n    const dx = b[0] - a[0];\n    const dy = b[1] - a[1];\n    const len2 = dx * dx + dy * dy;\n    const t =\n      len2 === 0\n        ? 0\n        : Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / len2));\n    return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy);\n  };\n  // Distance between segments p1p2 and q1q2 (they don't cross in this layout).\n  const segDist = (p1: Pt, p2: Pt, q1: Pt, q2: Pt) =>\n    Math.min(\n      pointSeg(p1, q1, q2),\n      pointSeg(p2, q1, q2),\n      pointSeg(q1, p1, p2),\n      pointSeg(q2, p1, p2),\n    );\n  const rotatePt = (p: Pt, a: number): Pt => [\n    p[0] * Math.cos(a) - p[1] * Math.sin(a),\n    p[0] * Math.sin(a) + p[1] * Math.cos(a),\n  ];\n\n  // Lay out one arm: hinge centers P[0..segs-1] plus the tip end P[segs].\n  // Each segment leans `dev` degrees off radial, growing along the arm.\n  const layout = (step: number, devMax: number) => {\n    const P: Pt[] = [[Rj0, 0]];\n    const heads: number[] = [];\n    for (let k = 0; k < segs; k++) {\n      const [x, y] = P[P.length - 1];\n      const dev = k === 0 ? 0 : Math.min(devMax, k * step);\n      const h = Math.atan2(y, x) + (dev * Math.PI) / 180;\n      heads.push(h);\n      const len = k < segs - 1 ? L : tipLength;\n      P.push([x + len * Math.cos(h), y + len * Math.sin(h)]);\n    }\n    let turn = 0;\n    for (let k = 1; k < segs; k++) {\n      turn = Math.max(turn, Math.abs(((heads[k] - heads[k - 1]) * 180) / Math.PI));\n    }\n    const reach = Math.max(...P.map((p) => Math.hypot(p[0], p[1]))) + Rd;\n    const a = (2 * Math.PI) / arms;\n    const Q = P.map((p) => rotatePt(p, a));\n    let armGap = Infinity;\n    let selfGap = Infinity;\n    let bodyGap = Infinity;\n    for (let i = 0; i < segs; i++) {\n      for (let j = 0; j < segs; j++) {\n        armGap = Math.min(armGap, segDist(P[i], P[i + 1], Q[j], Q[j + 1]) - 2 * Rd);\n        if (j >= i + 2) {\n          selfGap = Math.min(selfGap, segDist(P[i], P[i + 1], P[j], P[j + 1]) - 2 * Rd);\n        }\n      }\n      if (i >= 1) {\n        bodyGap = Math.min(bodyGap, pointSeg([0, 0], P[i], P[i + 1]) - Rd - Rj0);\n      }\n    }\n    return { P, heads, turn, reach, armGap, selfGap, bodyGap };\n  };\n\n  // Pick the curl that fits and leaves the most room between arms.\n  let best: ReturnType<typeof layout> | null = null;\n  let smallestReach = Infinity; // among layouts whose arms don't collide\n  for (let step = 15; step <= 45; step += 5) {\n    for (let devMax = 0; devMax <= 120; devMax += 5) {\n      const l = layout(step, devMax);\n      const clear =\n        l.armGap >= minGap &&\n        l.selfGap >= minGap &&\n        l.bodyGap >= minGap &&\n        l.turn <= maxTurn;\n      if (!clear) continue;\n      smallestReach = Math.min(smallestReach, l.reach);\n      if (l.reach <= limit && (!best || l.armGap > best.armGap)) best = l;\n    }\n  }\n  if (!best) {\n    const needed = Number.isFinite(smallestReach)\n      ? `the tightest layout needs about ${Math.ceil(2 * (smallestReach + 0.5))} mm`\n      : \"no layout keeps the arms apart\";\n    throw new Error(\n      `${arms} arms of ${segs} hinged segments don't fit in ${footprint} mm ` +\n        `(${needed}). Increase footprint or reduce segmentsPerArm.`,\n    );\n  }\n  const { P, heads } = best;\n\n  const prism = (drawing: any, z0: number, h: number) =>\n    drawing.sketchOnPlane(\"XY\", z0).extrude(h);\n  const cyl = (p: Pt, r: number, z0: number, h: number) =>\n    replicad.makeCylinder(r, h, [p[0], p[1], z0], [0, 0, 1]);\n  const stadium = (a: Pt, b: Pt) => {\n    const len = dist(a, b);\n    const ang = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;\n    return replicad\n      .drawRoundedRectangle(len + 2 * Rd, 2 * Rd, Rd - 0.001)\n      .rotate(ang, [0, 0])\n      .translate((a[0] + b[0]) / 2, (a[1] + b[1]) / 2);\n  };\n\n  // Cutters for the outer piece of a hinge at p (the tongue side). A hinge\n  // posed with a bend brings the inner corners of the two pieces closer, so\n  // the cut-out grows with the bend to keep the full clearance there.\n  const tongueCuts = (p: Pt, bendRadians: number) => {\n    const r = Rd / Math.cos(Math.abs(bendRadians) / 2) + c;\n    return [\n      cyl(p, r, 0, plate + layerGap),\n      cyl(p, r, T - plate - layerGap, plate + layerGap),\n      cyl(p, rp + c, 0, T),\n    ];\n  };\n  // Cutter for the inner piece of a hinge at p (the fork side).\n  const forkCut = (p: Pt) => cyl(p, Rd + 2 * c, plate, T - 2 * plate);\n\n  // One arm, built along its layout.\n  const armSegments: any[] = [];\n  for (let k = 0; k < segs; k++) {\n    const a = P[k];\n    const b = P[k + 1];\n    const isTip = k === segs - 1;\n    let solid = prism(stadium(a, b), 0, T);\n    const bend = k === 0 ? 0 : heads[k] - heads[k - 1];\n    const cuts = [...tongueCuts(a, bend)];\n    if (!isTip) cuts.push(forkCut(b));\n    // One tool at a time: a compound of overlapping tools cuts unreliably.\n    for (const tool of cuts) solid = solid.cut(tool);\n    if (!isTip) solid = solid.fuse(cyl(b, rp, 0, T));\n    armSegments.push(solid);\n  }\n\n  const parts: Assembly[] = [];\n  for (let n = 0; n < arms; n++) {\n    const angle = (360 / arms) * n;\n    armSegments.forEach((seg, k) => {\n      parts.push(\n        new Assembly({\n          geometry: seg.clone().rotate(angle, [0, 0, 0], [0, 0, 1]),\n          color,\n          tags: [\"arm\", `arm ${n + 1}`, `segment ${k + 1}`],\n        }),\n      );\n    });\n  }\n\n  // Body: a slab that carries the first hinge of every arm, plus a domed head\n  // with two eyes. The dome stays clear of the hinges so nothing overhangs.\n  let body = prism(replicad.drawCircle(Rj0), 0, T);\n  const roots: Pt[] = [];\n  for (let n = 0; n < arms; n++) roots.push(rotatePt(P[0], (2 * Math.PI * n) / arms));\n  for (const p of roots) {\n    body = body.fuse(prism(replicad.drawCircle(Rd).translate(p[0], p[1]), 0, T));\n    body = body.cut(forkCut(p));\n    body = body.fuse(cyl(p, rp, 0, T));\n  }\n\n  // Head: a rounded bulb revolved from a side profile. It stays inside the\n  // hinges up to just above the arms, swells out above them (a gentle\n  // overhang), and closes with a smooth round top instead of a point.\n  const neckRadius = Rj0 - Rd - 2 * c - 0.5;\n  const neckTop = T + 0.4;\n  const bulgeRadius = neckRadius + 1.8;\n  const bulgeZ = Math.max(neckTop + 3, headHeight * 0.48);\n  const profile = replicad\n    .draw([0, 0])\n    .lineTo([neckRadius, 0])\n    .lineTo([neckRadius, neckTop])\n    .cubicBezierCurveTo(\n      [bulgeRadius, bulgeZ],\n      [neckRadius, neckTop + (bulgeZ - neckTop) * 0.4],\n      [bulgeRadius, bulgeZ - (bulgeZ - neckTop) * 0.4],\n    )\n    .cubicBezierCurveTo(\n      [0, headHeight],\n      [bulgeRadius, bulgeZ + (headHeight - bulgeZ) * 0.75],\n      [bulgeRadius * 0.55, headHeight],\n    )\n    .close();\n  const head = profile\n    .sketchOnPlane(\"XZ\")\n    .revolve([0, 0, 1], { origin: [0, 0, 0] });\n  body = body.fuse(head);\n  parts.push(\n    new Assembly({\n      geometry: body,\n      color,\n      tags: [\"body\"],\n      bom: [\"Flexi octopus, printed in place\"],\n    }),\n  );\n\n  // Cute eyes: big white eyeballs set wide on the front (+X) of the head, a\n  // dark pupil looking slightly forward, and a small highlight on each pupil.\n  const eyeZ = bulgeZ + eyeSize * 0.2;\n  for (const side of [-1, 1]) {\n    const az = (side * 28 * Math.PI) / 180;\n    const out: [number, number, number] = [Math.cos(az), Math.sin(az), 0];\n    const at = (r: number, z: number): [number, number, number] => [\n      out[0] * r,\n      out[1] * r,\n      z,\n    ];\n    const eyeCenter = at(bulgeRadius - eyeSize * 0.45, eyeZ);\n    const eyeball = replicad.makeSphere(eyeSize).translate(...eyeCenter);\n    // Pupils sit on the eyeball, turned a little toward the front.\n    const look = (side * -12 * Math.PI) / 180;\n    const pdir: [number, number, number] = [\n      Math.cos(az + look) * 0.94,\n      Math.sin(az + look) * 0.94,\n      0.34,\n    ];\n    const pupilR = eyeSize * 0.5;\n    const pupilCenter: [number, number, number] = [\n      eyeCenter[0] + pdir[0] * (eyeSize - pupilR * 0.55),\n      eyeCenter[1] + pdir[1] * (eyeSize - pupilR * 0.55),\n      eyeCenter[2] + pdir[2] * (eyeSize - pupilR * 0.55),\n    ];\n    const pupil = replicad.makeSphere(pupilR).translate(...pupilCenter);\n    const glintR = pupilR * 0.35;\n    const glint = replicad\n      .makeSphere(glintR)\n      .translate(\n        pupilCenter[0] + pdir[0] * pupilR * 0.75 - out[1] * side * pupilR * 0.25,\n        pupilCenter[1] + pdir[1] * pupilR * 0.75 + out[0] * side * pupilR * 0.25,\n        pupilCenter[2] + pupilR * 0.45,\n      );\n    parts.push(\n      new Assembly({ geometry: eyeball, color: \"#FFFFFF\", tags: [\"eye\"] }),\n      new Assembly({ geometry: pupil, color: \"#2B2D42\", tags: [\"pupil\"] }),\n      new Assembly({ geometry: glint, color: \"#FFFFFF\", tags: [\"eye\"] }),\n    );\n  }\n  return parts;\n}\n",
+          "compiledCode": "\"use strict\";\n/**\n * Print-in-place flexi octopus. Prints flat, already assembled; every arm\n * segment swings on its own hinge straight off the bed.\n *\n * Each hinge is a clevis: the inner piece has top and bottom plates joined by\n * a vertical pin; the outer piece has a tongue in the middle layer with a hole\n * around the pin. Horizontal clearance is `clearance`, vertical clearance is\n * `layerGap`. The arms swirl into a pinwheel so the whole octopus fits in a\n * `footprint` x `footprint` square; the curl is chosen automatically.\n * The head is a rounded bulb with big cartoon eyes; the eyes are separate\n * colored parts that merge with the head in a single-color print.\n * Lengths are in mm.\n */\nfunction run(footprint = 80, segmentsPerArm = 8, armCount = 8, clearance = 0.3, pinDiameter = 1.6, headHeight = 21, eyeSize = 3.4, color = \"#E76F51\") {\n    const segs = Math.max(1, Math.round(segmentsPerArm));\n    const arms = Math.max(3, Math.round(armCount));\n    const c = clearance;\n    const layerGap = 0.4; // two 0.2 mm layers\n    const plate = 1.0; // fork plate thickness\n    const tongue = 1.4; // tongue thickness\n    const T = 2 * plate + 2 * layerGap + tongue; // arm thickness\n    const rp = pinDiameter / 2;\n    const Rd = rp + c + 0.8; // joint radius = half the arm width\n    const L = Rd + c + (Rd + 2 * c) + 1.2; // hinge-to-hinge length\n    const tipLength = Rd + c + 3.5;\n    const Rj0 = 15; // radius of the first hinge on the body\n    const minGap = 0.8;\n    const maxTurn = 45; // posed bend per hinge, well inside its range\n    const limit = footprint / 2 - 0.5;\n    const dist = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1]);\n    // Distance from point p to segment ab.\n    const pointSeg = (p, a, b) => {\n        const dx = b[0] - a[0];\n        const dy = b[1] - a[1];\n        const len2 = dx * dx + dy * dy;\n        const t = len2 === 0\n            ? 0\n            : Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / len2));\n        return Math.hypot(p[0] - a[0] - t * dx, p[1] - a[1] - t * dy);\n    };\n    // Distance between segments p1p2 and q1q2 (they don't cross in this layout).\n    const segDist = (p1, p2, q1, q2) => Math.min(pointSeg(p1, q1, q2), pointSeg(p2, q1, q2), pointSeg(q1, p1, p2), pointSeg(q2, p1, p2));\n    const rotatePt = (p, a) => [\n        p[0] * Math.cos(a) - p[1] * Math.sin(a),\n        p[0] * Math.sin(a) + p[1] * Math.cos(a),\n    ];\n    // Lay out one arm: hinge centers P[0..segs-1] plus the tip end P[segs].\n    // Each segment leans `dev` degrees off radial, growing along the arm.\n    const layout = (step, devMax) => {\n        const P = [[Rj0, 0]];\n        const heads = [];\n        for (let k = 0; k < segs; k++) {\n            const [x, y] = P[P.length - 1];\n            const dev = k === 0 ? 0 : Math.min(devMax, k * step);\n            const h = Math.atan2(y, x) + (dev * Math.PI) / 180;\n            heads.push(h);\n            const len = k < segs - 1 ? L : tipLength;\n            P.push([x + len * Math.cos(h), y + len * Math.sin(h)]);\n        }\n        let turn = 0;\n        for (let k = 1; k < segs; k++) {\n            turn = Math.max(turn, Math.abs(((heads[k] - heads[k - 1]) * 180) / Math.PI));\n        }\n        const reach = Math.max(...P.map((p) => Math.hypot(p[0], p[1]))) + Rd;\n        const a = (2 * Math.PI) / arms;\n        const Q = P.map((p) => rotatePt(p, a));\n        let armGap = Infinity;\n        let selfGap = Infinity;\n        let bodyGap = Infinity;\n        for (let i = 0; i < segs; i++) {\n            for (let j = 0; j < segs; j++) {\n                armGap = Math.min(armGap, segDist(P[i], P[i + 1], Q[j], Q[j + 1]) - 2 * Rd);\n                if (j >= i + 2) {\n                    selfGap = Math.min(selfGap, segDist(P[i], P[i + 1], P[j], P[j + 1]) - 2 * Rd);\n                }\n            }\n            if (i >= 1) {\n                bodyGap = Math.min(bodyGap, pointSeg([0, 0], P[i], P[i + 1]) - Rd - Rj0);\n            }\n        }\n        return { P, heads, turn, reach, armGap, selfGap, bodyGap };\n    };\n    // Pick the curl that fits and leaves the most room between arms.\n    let best = null;\n    let smallestReach = Infinity; // among layouts whose arms don't collide\n    for (let step = 15; step <= 45; step += 5) {\n        for (let devMax = 0; devMax <= 120; devMax += 5) {\n            const l = layout(step, devMax);\n            const clear = l.armGap >= minGap &&\n                l.selfGap >= minGap &&\n                l.bodyGap >= minGap &&\n                l.turn <= maxTurn;\n            if (!clear)\n                continue;\n            smallestReach = Math.min(smallestReach, l.reach);\n            if (l.reach <= limit && (!best || l.armGap > best.armGap))\n                best = l;\n        }\n    }\n    if (!best) {\n        const needed = Number.isFinite(smallestReach)\n            ? `the tightest layout needs about ${Math.ceil(2 * (smallestReach + 0.5))} mm`\n            : \"no layout keeps the arms apart\";\n        throw new Error(`${arms} arms of ${segs} hinged segments don't fit in ${footprint} mm ` +\n            `(${needed}). Increase footprint or reduce segmentsPerArm.`);\n    }\n    const { P, heads } = best;\n    const prism = (drawing, z0, h) => drawing.sketchOnPlane(\"XY\", z0).extrude(h);\n    const cyl = (p, r, z0, h) => replicad.makeCylinder(r, h, [p[0], p[1], z0], [0, 0, 1]);\n    const stadium = (a, b) => {\n        const len = dist(a, b);\n        const ang = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;\n        return replicad\n            .drawRoundedRectangle(len + 2 * Rd, 2 * Rd, Rd - 0.001)\n            .rotate(ang, [0, 0])\n            .translate((a[0] + b[0]) / 2, (a[1] + b[1]) / 2);\n    };\n    // Cutters for the outer piece of a hinge at p (the tongue side). A hinge\n    // posed with a bend brings the inner corners of the two pieces closer, so\n    // the cut-out grows with the bend to keep the full clearance there.\n    const tongueCuts = (p, bendRadians) => {\n        const r = Rd / Math.cos(Math.abs(bendRadians) / 2) + c;\n        return [\n            cyl(p, r, 0, plate + layerGap),\n            cyl(p, r, T - plate - layerGap, plate + layerGap),\n            cyl(p, rp + c, 0, T),\n        ];\n    };\n    // Cutter for the inner piece of a hinge at p (the fork side).\n    const forkCut = (p) => cyl(p, Rd + 2 * c, plate, T - 2 * plate);\n    // One arm, built along its layout.\n    const armSegments = [];\n    for (let k = 0; k < segs; k++) {\n        const a = P[k];\n        const b = P[k + 1];\n        const isTip = k === segs - 1;\n        let solid = prism(stadium(a, b), 0, T);\n        const bend = k === 0 ? 0 : heads[k] - heads[k - 1];\n        const cuts = [...tongueCuts(a, bend)];\n        if (!isTip)\n            cuts.push(forkCut(b));\n        // One tool at a time: a compound of overlapping tools cuts unreliably.\n        for (const tool of cuts)\n            solid = solid.cut(tool);\n        if (!isTip)\n            solid = solid.fuse(cyl(b, rp, 0, T));\n        armSegments.push(solid);\n    }\n    const parts = [];\n    for (let n = 0; n < arms; n++) {\n        const angle = (360 / arms) * n;\n        armSegments.forEach((seg, k) => {\n            parts.push(new Assembly({\n                geometry: seg.clone().rotate(angle, [0, 0, 0], [0, 0, 1]),\n                color,\n                tags: [\"arm\", `arm ${n + 1}`, `segment ${k + 1}`],\n            }));\n        });\n    }\n    // Body: a slab that carries the first hinge of every arm, plus a domed head\n    // with two eyes. The dome stays clear of the hinges so nothing overhangs.\n    let body = prism(replicad.drawCircle(Rj0), 0, T);\n    const roots = [];\n    for (let n = 0; n < arms; n++)\n        roots.push(rotatePt(P[0], (2 * Math.PI * n) / arms));\n    for (const p of roots) {\n        body = body.fuse(prism(replicad.drawCircle(Rd).translate(p[0], p[1]), 0, T));\n        body = body.cut(forkCut(p));\n        body = body.fuse(cyl(p, rp, 0, T));\n    }\n    // Head: a rounded bulb revolved from a side profile. It stays inside the\n    // hinges up to just above the arms, swells out above them (a gentle\n    // overhang), and closes with a smooth round top instead of a point.\n    const neckRadius = Rj0 - Rd - 2 * c - 0.5;\n    const neckTop = T + 0.4;\n    const bulgeRadius = neckRadius + 1.8;\n    const bulgeZ = Math.max(neckTop + 3, headHeight * 0.48);\n    const profile = replicad\n        .draw([0, 0])\n        .lineTo([neckRadius, 0])\n        .lineTo([neckRadius, neckTop])\n        .cubicBezierCurveTo([bulgeRadius, bulgeZ], [neckRadius, neckTop + (bulgeZ - neckTop) * 0.4], [bulgeRadius, bulgeZ - (bulgeZ - neckTop) * 0.4])\n        .cubicBezierCurveTo([0, headHeight], [bulgeRadius, bulgeZ + (headHeight - bulgeZ) * 0.75], [bulgeRadius * 0.55, headHeight])\n        .close();\n    const head = profile\n        .sketchOnPlane(\"XZ\")\n        .revolve([0, 0, 1], { origin: [0, 0, 0] });\n    body = body.fuse(head);\n    parts.push(new Assembly({\n        geometry: body,\n        color,\n        tags: [\"body\"],\n        bom: [\"Flexi octopus, printed in place\"],\n    }));\n    // Cute eyes: big white eyeballs set wide on the front (+X) of the head, a\n    // dark pupil looking slightly forward, and a small highlight on each pupil.\n    const eyeZ = bulgeZ + eyeSize * 0.2;\n    for (const side of [-1, 1]) {\n        const az = (side * 28 * Math.PI) / 180;\n        const out = [Math.cos(az), Math.sin(az), 0];\n        const at = (r, z) => [\n            out[0] * r,\n            out[1] * r,\n            z,\n        ];\n        const eyeCenter = at(bulgeRadius - eyeSize * 0.45, eyeZ);\n        const eyeball = replicad.makeSphere(eyeSize).translate(...eyeCenter);\n        // Pupils sit on the eyeball, turned a little toward the front.\n        const look = (side * -12 * Math.PI) / 180;\n        const pdir = [\n            Math.cos(az + look) * 0.94,\n            Math.sin(az + look) * 0.94,\n            0.34,\n        ];\n        const pupilR = eyeSize * 0.5;\n        const pupilCenter = [\n            eyeCenter[0] + pdir[0] * (eyeSize - pupilR * 0.55),\n            eyeCenter[1] + pdir[1] * (eyeSize - pupilR * 0.55),\n            eyeCenter[2] + pdir[2] * (eyeSize - pupilR * 0.55),\n        ];\n        const pupil = replicad.makeSphere(pupilR).translate(...pupilCenter);\n        const glintR = pupilR * 0.35;\n        const glint = replicad\n            .makeSphere(glintR)\n            .translate(pupilCenter[0] + pdir[0] * pupilR * 0.75 - out[1] * side * pupilR * 0.25, pupilCenter[1] + pdir[1] * pupilR * 0.75 + out[0] * side * pupilR * 0.25, pupilCenter[2] + pupilR * 0.45);\n        parts.push(new Assembly({ geometry: eyeball, color: \"#FFFFFF\", tags: [\"eye\"] }), new Assembly({ geometry: pupil, color: \"#2B2D42\", tags: [\"pupil\"] }), new Assembly({ geometry: glint, color: \"#FFFFFF\", tags: [\"eye\"] }));\n    }\n    return parts;\n}\n"
+        },
+        {
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.2,
+          "uniqueID": "id-2294",
+          "name": "Footprint",
+          "type": "number",
+          "options": []
+        },
+        {
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.2,
+          "uniqueID": "id-2297",
+          "name": "Segments_Per_Arm",
+          "type": "number",
+          "options": []
+        },
+        {
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.3,
+          "uniqueID": "id-2300",
+          "name": "Clearance",
+          "type": "number",
+          "options": []
+        }
+      ],
+      "allConnectors": [
+        {
+          "ap2Name": "number or geometry",
+          "ap1ID": "id-2279",
+          "ap2ID": "id-2277"
+        },
+        {
+          "ap2Name": "footprint",
+          "ap1ID": "id-2294",
+          "ap2ID": "id-2279"
+        },
+        {
+          "ap2Name": "segmentsPerArm",
+          "ap1ID": "id-2297",
+          "ap2ID": "id-2279"
+        },
+        {
+          "ap2Name": "clearance",
+          "ap1ID": "id-2300",
+          "ap2ID": "id-2279"
+        }
+      ],
+      "fileTypeVersion": 1
     }
   ],
   "allConnectors": [
