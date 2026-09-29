@@ -277,6 +277,75 @@
       "partName": "Sphere"
     },
     {
+      "atomType": "Molecule",
+      "x": 0.1,
+      "y": 0.6,
+      "uniqueID": "id-2126",
+      "name": "Spiral Staircase",
+      "topLevel": false,
+      "allAtoms": [
+        {
+          "atomType": "Output",
+          "x": 1,
+          "y": 0.5,
+          "uniqueID": "id-2128",
+          "ioValues": [
+            {
+              "name": "number or geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            }
+          ]
+        },
+        {
+          "atomType": "Rectangle",
+          "x": 0.3,
+          "y": 0.5,
+          "uniqueID": "id-2130",
+          "name": "Cube Base",
+          "ioValues": [
+            {
+              "name": "x length",
+              "ioValue": 20
+            },
+            {
+              "name": "y length",
+              "ioValue": 20
+            }
+          ]
+        },
+        {
+          "atomType": "Extrude",
+          "x": 0.6,
+          "y": 0.5,
+          "uniqueID": "id-2134",
+          "name": "Cube",
+          "ioValues": [
+            {
+              "name": "geometry",
+              "ioValue": "__GEOMETRY_INPUT__"
+            },
+            {
+              "name": "height",
+              "ioValue": 20
+            }
+          ]
+        }
+      ],
+      "allConnectors": [
+        {
+          "ap2Name": "geometry",
+          "ap1ID": "id-2130",
+          "ap2ID": "id-2134"
+        },
+        {
+          "ap2Name": "number or geometry",
+          "ap1ID": "id-2134",
+          "ap2ID": "id-2128"
+        }
+      ],
+      "fileTypeVersion": 1
+    },
+    {
       "atomType": "Input",
       "x": 0,
       "y": 0.2,
