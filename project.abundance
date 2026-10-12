@@ -7497,8 +7497,8 @@
     },
     {
       "atomType": "Molecule",
-      "x": 0.9,
-      "y": 0.3,
+      "x": 0.8,
+      "y": 0.4,
       "uniqueID": "id-6085",
       "name": "Fillet Chain Test",
       "topLevel": false,
@@ -7607,8 +7607,7 @@
               "selectedEdgeData": {
                 "0": [
                   9,
-                  3,
-                  8
+                  3
                 ]
               },
               "upstreamSelectionKey": "[[],{},{}]"
@@ -7708,12 +7707,11 @@
               "options": [],
               "selectedEdgeData": {
                 "0": [
-                  9,
-                  3,
-                  8
+                  6,
+                  11
                 ]
               },
-              "upstreamSelectionKey": "[[],{\"0\":[9,3,8]},{}]"
+              "upstreamSelectionKey": "[[],{},{}]"
             },
             {
               "atomType": "Input",
