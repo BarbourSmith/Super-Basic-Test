@@ -3213,8 +3213,8 @@
     },
     {
       "atomType": "Molecule",
-      "x": 0.7,
-      "y": 0.3,
+      "x": 0.8,
+      "y": 0.1,
       "uniqueID": "id-3999",
       "name": "Living Room",
       "topLevel": false,
@@ -7501,6 +7501,12 @@
       "y": 0.4,
       "uniqueID": "id-6085",
       "name": "Fillet Chain Test",
+      "ioValues": [
+        {
+          "name": "Input",
+          "ioValue": "__GEOMETRY_INPUT__"
+        }
+      ],
       "topLevel": false,
       "allAtoms": [
         {
@@ -7550,7 +7556,7 @@
         {
           "atomType": "GitHubMolecule",
           "x": 0.6,
-          "y": 0.5,
+          "y": 0.4,
           "uniqueID": "id-6102",
           "name": "selected.Fillet",
           "ioValues": [
@@ -7606,11 +7612,11 @@
               "options": [],
               "selectedEdgeData": {
                 "0": [
-                  9,
-                  3
+                  11,
+                  6
                 ]
               },
-              "upstreamSelectionKey": "[[],{},{}]"
+              "upstreamSelectionKey": "[[],{\"0\":[11,6]},{}]"
             },
             {
               "atomType": "Input",
@@ -7748,6 +7754,21 @@
           "unitsKey": "Unitless",
           "fileTypeVersion": 1,
           "lastReloadedFromGithubAt": 1791828808459
+        },
+        {
+          "atomType": "Input",
+          "x": 0,
+          "y": 0.2,
+          "uniqueID": "id-7257",
+          "type": "edgeselect",
+          "options": [],
+          "selectedEdgeData": {
+            "0": [
+              11,
+              6
+            ]
+          },
+          "upstreamSelectionKey": "[[],{},{}]"
         }
       ],
       "allConnectors": [
@@ -7758,11 +7779,6 @@
         },
         {
           "ap2Name": "shape",
-          "ap1ID": "id-6093",
-          "ap2ID": "id-6102"
-        },
-        {
-          "ap2Name": "shape",
           "ap1ID": "id-6102",
           "ap2ID": "id-6119"
         },
@@ -7770,9 +7786,46 @@
           "ap2Name": "number or geometry",
           "ap1ID": "id-6119",
           "ap2ID": "id-6087"
+        },
+        {
+          "ap2Name": "shape",
+          "ap1ID": "id-7257",
+          "ap2ID": "id-6102"
         }
       ],
       "fileTypeVersion": 1
+    },
+    {
+      "atomType": "Rectangle",
+      "x": 0.6,
+      "y": 0.3,
+      "uniqueID": "id-7260",
+      "ioValues": [
+        {
+          "name": "x length",
+          "ioValue": 40
+        },
+        {
+          "name": "y length",
+          "ioValue": 40
+        }
+      ]
+    },
+    {
+      "atomType": "Extrude",
+      "x": 0.7,
+      "y": 0.3,
+      "uniqueID": "id-7261",
+      "ioValues": [
+        {
+          "name": "geometry",
+          "ioValue": "__GEOMETRY_INPUT__"
+        },
+        {
+          "name": "height",
+          "ioValue": 20
+        }
+      ]
     }
   ],
   "allConnectors": [
@@ -7800,6 +7853,16 @@
       "ap2Name": "number or geometry",
       "ap1ID": "id-3725",
       "ap2ID": "dddabc94-fc33-4854-a6f0-1a8dc5125934"
+    },
+    {
+      "ap2Name": "geometry",
+      "ap1ID": "id-7260",
+      "ap2ID": "id-7261"
+    },
+    {
+      "ap2Name": "Input",
+      "ap1ID": "id-7261",
+      "ap2ID": "id-6085"
     }
   ],
   "unitsKey": "MM",
