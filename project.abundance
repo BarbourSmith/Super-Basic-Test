@@ -7529,7 +7529,7 @@
           "ioValues": [
             {
               "name": "x length",
-              "ioValue": 40
+              "ioValue": 41
             },
             {
               "name": "y length",
@@ -7615,8 +7615,7 @@
                   11,
                   6
                 ]
-              },
-              "upstreamSelectionKey": "[[],{\"0\":[11,6]},{}]"
+              }
             },
             {
               "atomType": "Input",
@@ -7713,11 +7712,10 @@
               "options": [],
               "selectedEdgeData": {
                 "0": [
-                  8,
-                  11
+                  11,
+                  6
                 ]
-              },
-              "upstreamSelectionKey": "[[],{},{}]"
+              }
             },
             {
               "atomType": "Input",
@@ -7767,8 +7765,7 @@
               11,
               6
             ]
-          },
-          "upstreamSelectionKey": "[[],{},{}]"
+          }
         }
       ],
       "allConnectors": [
